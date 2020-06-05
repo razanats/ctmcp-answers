@@ -1,4 +1,4 @@
-% 1.計算機
+% 1.Computer
 %  (a)
 declare V1 V2 V4 V8 V16 V32 V64
 V1 = 2
@@ -8,13 +8,13 @@ V8 = V4*V4
 V16 = V8*V8
 V32 = V16*V16
 V64 = V32*V32
-V100 = V64*V32*V4 % (b)でも述べるが、これはプログラマが各命令間の状態のやりとりを手助けしている。
+V100 = V64*V32*V4 % (b) But as I said, it helps programmers exchange state between instructions.
 
 % (b)
-% 近道はあるかもしれないが、それは人間が部分的に問題を解く(変形する)ことに依存する。
+% There may be shortcuts, but it depends on humans partially solving (transforming) the problem.
 
-% * 考察：関数を定義しないとはどういうことか
-% 第二章・第三章の宣言的モデルに従って考える。使える文は、複文、変数宣言、変数束縛、条件分岐のみである。組み込み関数は数値演算のみとする（関数というデータ型は存在しない）。
-% 関数が定義できないということは、例えば再帰が使えないということであり、ループなどが使えないということである。
-% 一般に、再帰ができないと、状態をスレッド化して計算することができない。すなわち、それぞれの計算は一回きりとなり、相互に状態のやりとりを自動ですることはできない。
-% また、関数が定義できないということは、繰り返しを抽象化できないということである。それは、全ての計算をプログラマが直書きすることを意味する（言い換えれば、プログラマが問題をうまく抽象化できなければ、必要とされる労力は変わらない。今回の問題は、抽象化が非常に容易であるために、関数は容易に力を発揮する。）
+% * Consideration: What does it mean to not define a function?
+% Think according to the declarative model in Chapters 2 and 3. The only statements that can be used are compound statements, variable declarations, variable bindings, and conditional branches. Built-in functions are limited to numerical operations (there is no function data type).
+% The fact that functions cannot be defined means that, for example, recursion cannot be used, and loops cannot be used.
+% In general, without recursion, the state cannot be threaded and calculated. That is, each calculation is a one-time operation, and mutual exchange of states cannot be performed automatically.
+% Also, the fact that a function cannot be defined means that iteration cannot be abstracted. That means that all calculations are written by the programmer directly (in other words, unless the programmer can abstract the problem well, the effort required is unchanged. This problem is very easy to abstract. Because, the function easily exerts its force.)
