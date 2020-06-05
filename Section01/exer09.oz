@@ -1,4 +1,4 @@
-% 9.記憶域
+% 9. Memory Domain
 
 % Load file.
 % The memory store as used in the exercises
@@ -24,7 +24,7 @@ fun {Size S} {S.size} end
 
 
 % (a)
-% NewDectionaryなるクラスから、記憶域は作られている。メモリセルがたくさん集まっている。
+% Storage is created from a class called NewDectionary. A lot of memory cells are gathered.
 
 declare
 S={NewStore}
@@ -48,7 +48,7 @@ end
 
 
 % (c)(d)
-% 記憶域の内部実装を示せ、という解釈。
+% Interpretation, showing the internal implementation of storage.
 declare
 fun {NewMemory}
    M = {NewCell nil}
