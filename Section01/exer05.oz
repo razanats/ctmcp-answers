@@ -1,4 +1,4 @@
-% 5.遅延計算
+% 5. Delay calculation
 
 declare SumList
 fun {SumList L}
