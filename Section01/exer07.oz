@@ -1,5 +1,5 @@
 
-% 7.明示的状態
+% 7. Explicit state
 
 local X in
    X=23
@@ -15,5 +15,5 @@ local X in
    {Browse @X}
 end
 
-% 変数の方は23が表示／メモリセルの方は44が表示される
-% 変数の方について：23のXと44のXは別々のところに格納されている（格納域変数）。識別子としては、最後に宣言されたものが機能する。
+% 23 is displayed for variables/44 is displayed for memory cells
+% Regarding the variables: X of 23 and X of 44 are stored separately (storage variable). The last declared one works as an identifier.
