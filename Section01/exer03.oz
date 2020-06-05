@@ -1,17 +1,17 @@
-% 3.プログラムの正しさ
+% 3. Correctness of the program
 
-% 証明：関数AddList,ShiftLeft,ShiftRightがそれぞれの操作を満たしているとする。言語の意味より、Nが1のとき、それ以外の時ともに定義を満たしている。。よってPascalは正しい。
+% Proof: Suppose the functions AddList, ShiftLeft, ShiftRight satisfy each operation. From the meaning of the language, the definition is satisfied when N is 1 and at other times. .. So Pascal is right.
 
-% 証明（ShiftLeft）：ShiftRightは（言語の意味より）明らかに正しい。
+% Proof (ShiftLeft): ShiftRight is clearly correct (in terms of language).
 
-% 証明（ShiftRight)：ShiftLeftは、リストの最後に0を加える操作である。
-% (i)要素数Nの任意のリストに対して定義を満たすと仮定する
-% 要素数N+１のリストを引数に渡す時を考える。ShiftLeftは、このリストを頭部Hと尾部Tに分解し、TをShiftLeftに渡したものを、Hに結合する。仮定より、Tの最後には0が加えられているため、要素数N+1のとき定義を満たす。
-% (ii)要素数が１のリスト
-% リストは、その要素とnilに分解される。nilはShiftLeftに引数として渡されることで０となるので、確かに要素数が１のとき、リストの最後に０が加えられる。
-% (i)(ii)より数学的帰納法からShiftLeftは定義を満たす。
+% Proof (ShiftRight): ShiftLeft is an operation that adds 0 to the end of the list.
+% (i) Suppose the definition is satisfied for any list with N elements
+% Consider the case of passing a list of N+1 elements as an argument. ShiftLeft decomposes this list into a head H and a tail T, and passes T to ShiftLeft and combines it with H. By the assumption, 0 is added to the end of T, so the definition is satisfied when the number of elements is N+1.
+% (ii) List with one element
+% The list is decomposed into its elements and nil. When nil is passed to ShiftLeft as an argument, it becomes 0, so when the number of elements is 1, 0 is added to the end of the list.
+% From (i) and (ii), from the induction, ShiftLeft satisfies the definition.
 
-% 証明(AddList)：AddListは要素数Nのリストのn(n=1,...,N)番目の要素を足し合わせる操作である。
-% (i)要素数N(N>=1)のリストが正しく足し合わされるとき、要素数N+1のリストは正しく足し合わされる。
-% (ii)要素数1のリスト[H1]と[H2]は、それぞれH1とnil、H2とnilに分解される。AddListは二つのnilに対してnilを返すため、H1とH2を足したものに、nilが結合したリストが返される。従って、要素数1のとき、定義を満たす。
-% (i)(ii)より(ry
+% Proof (AddList): AddList is an operation to add the n(n=1,...,N)-th element of the list with N elements.
+% (i) When the list with the number of elements N (N>=1) is correctly added, the list with the number of elements N+1 is correctly added.
+% (ii) Lists [H1] and [H2] each having one element are decomposed into H1 and nil, and H2 and nil, respectively. Since AddList returns nil for two nil, the list obtained by adding n1 to the sum of H1 and H2 is returned. Therefore, when the number of elements is 1, the definition is satisfied.
+% From (i)(ii) (ry
