@@ -1,4 +1,4 @@
-% 4.プログラムの計算量
+% 4. Program complexity
 
-% 時間計算量が高次の多項式であるようなプログラムの実用性は、想定される問題サイズに依存する。問題の性質上、想定される大きさに制限がないようなものであれば、実用性はない。
-% また、高性能計算のように、低次の多項式であっても、O(n^3)とO(n^2)などの違いが非常に重要になってくる領域も存在する。
+% The practicality of a program whose% time complexity is a high-order polynomial depends on the assumed problem size. Due to the nature of the problem, there is no practical limit if the size is not limited.
+% In addition, there are some areas, such as high-performance computation, where the difference between O(n^3) and O(n^2) becomes very important even for low-order polynomials.
