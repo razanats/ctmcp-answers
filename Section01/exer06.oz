@@ -1,4 +1,4 @@
-% 6.高階プログラミング
+% 6. Higher-order programming
 % (a)
 declare Add Subtract Multiply Mull
 fun {Add X Y}
@@ -21,14 +21,14 @@ fun {GenericPascalList Op N}
 end
 
 {Browse {GenericPascalList Add 7}}
-{Browse {GenericPascalList Subtract 7}} % 交互にマイナスが付いた
-{Browse {GenericPascalList Multiply 7}} % 二行目以降は全て0
-{Browse {GenericPascalList Mull 7}} % 中心ほど増え方が大きい
+{Browse {GenericPascalList Subtract 7}} % Alternating minus
+{Browse {GenericPascalList Multiply 7}} % All after the second line is 0
+{Browse {GenericPascalList Mull 7}} % The more the center, the greater the increase
 
 {Browse {GenericPascal Mull 10}}
 
-% (b)ル―プ命令の導入
+% (b) Introduction of loop command
 for I in
    1..10 do {Browse {GenericPascal Add I}}
 end
-% 教訓：ル―プは再帰で代用可
+% Lesson learned: loops are recursive and can be substituted
