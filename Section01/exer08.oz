@@ -1,5 +1,5 @@
-% 8.明示的状態と関数
-% 問題点：関数内でメモリセルを宣言、初期化しているので、それぞれの引数は別の格納域に保存される。→カウントは保持されない
+% 8. Explicit states and functions
+% Problem: Since the memory cell is declared and initialized in the function, each argument is saved in another storage area. → Count is not retained
 
 declare
 local Acc in
