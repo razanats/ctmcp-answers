@@ -1,4 +1,4 @@
-% 2.組み合わせの計算
+% 2. Calculation of combinations
 % (a)
 declare Perm FastComb
 fun {Perm N K}
@@ -14,9 +14,9 @@ end
 
 %(b)
 
-% n*(n-1)*...*(n-k+1)/k!=n*(n-1)*...*(n-(k-1))/k!= 1回の割り算と(k-1)+(k-1)=2k-2回の掛け算
-% n*(n-1)*...*(n-(n-k)+1)/(n-k)!=n*(n-1)*...*(n-(n-k-1))/(n-k)!= 1回の割り算と(n-k-1)+(n-k-1)=2n-2k-2回の掛け算
-% よってnCkの方が速い（もしくは同じ）なのは、2k-2<=2n-2k-2 ⇔ 2k<=n のとき 
+% n*(n-1)*...*(n-k+1)/k!=n*(n-1)*...*(n-(k-1))/k!= 1 time And (k-1)+(k-1)=2k-2 times multiplication
+% n*(n-1)*...*(n-k+1)/k!=n*(n-1)*...*(n-(k-1))/k!= 1 time And multiplication of (k-1)+(k-1)=2k-2 times n*(n-1)*...*(n-(nk)+1)/(nk)!=n* (n-1)*...*(n-(nk-1))/(nk)!= 1 division and (nk-1)+(nk-1)=2n-2k-2 multiplications
+% Therefore, nCk is faster (or the same) when 2k-2<=2n-2k-2 ⇔ 2k<=n
 
 declare VeryFastComb
 fun {VeryFastComb N K}
