@@ -1,20 +1,20 @@
-% 1.自由変数と束縛変数
+% 1. Free and linked variables
 
 /*
-たぶん、問題文は、「二番目のPの指す変数は束縛されているか」と聞きたいのだと思う。
+Maybe the question sentence is "Is the variable pointed to by the second P bound?"
 
-"declare P"を補完して考える。
-核言語に近い形で書くと、以下。
+Consider "declare P" as a complement.
+When written in a form similar to the nuclear language, it is as follows.
 
 P = proc{$ X}
        if X>0 then {P X-1} end
     end
 
-Pの示す格納域の変数をpとすると、pは手続き値に束縛された変数である。
+Let p be the variable in the storage area indicated by P, and p is a variable bound to a procedure value.
 
 */
 
-/* c.f.実行状態の遷移
+/* c.f.Execution state transition
 ([(local P in <s> end,Φ)],Φ)
 ([(P=...,{P=>p})],{p})
 ([()],{p=(proc...,P=>p)})
