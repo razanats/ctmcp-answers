@@ -1,5 +1,5 @@
-% 3.関数と手続き
-/* 構文より、関数の末尾は式で終わる必要がある。この場合、'if-then-else'が式である。式としての'if-then-else'において'else'節を記述しなくてもパーサはエラーを吐かない。'else'は定義域でない（ので実行されない）という解釈をしている（と思われる）。すなわち、else節は想定されていないため、そのようなことが起こった場合は例外が発生するのが正しい。*/
+% 3. Functions and procedures
+/* Due to the syntax, the end of the function must end with an expression. In this case,'if-then-else' is the expression. The parser does not throw an error if you do not write an'else' clause in the expression'if-then-else'. 'else' is (probably) interpreted as not domain (and therefore not executed). That is, since the else clause is not expected, it is correct to raise an exception if that happens. */
 
 declare
 fun {Test X}
@@ -13,14 +13,14 @@ catch X then
 end
 
 
-% 以下でも同じ考え方でコンパイラはコードを通し、実行において例外が発生する。
+% In the same way, the compiler will pass the code and an exception will occur during execution.
 declare Y
 Y = if false then 1 end
 % これは通る。
 Y = if true then 1 end
 
 
-% なお、手続きで書くと以下。明らかに例外は発生しないことがわかる。
+% The procedure is as follows. Obviously, no exception occurs.
 declare
 proc {Test X ?Y}
    if X then Y = X end
