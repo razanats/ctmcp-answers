@@ -1,7 +1,7 @@
-% 2.文脈的環境
-/* このステップが無ければ、呼び出しの度に手続きMulByNの挙動が変わってしまう。実行がその引数のみによって決まるためには、このステップが必要である。*/
+% 2. The context of the context
+/* Without this step, the behavior of the procedure MulByN changes each time it is called. This step is necessary because execution depends only on its arguments.*/
 
-% 呼び出し時の環境にNが存在しない例
+% Example where N does not exist in the environment at the time of calling
 declare A=10 B
 
 local MulByn in
@@ -16,7 +16,7 @@ local MulByn in
    % {Browse N} => 'variable N not introduced'
 end
 
-% 呼び出し時の環境にNが存在するが、3以外の値に束縛されている例
+% Example where N exists in the environment at the time of calling, but is bound to a value other than 3
 declare A=10 B
 local MulByn in
    local N in
