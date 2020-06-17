@@ -1,4 +1,4 @@
-% 15.クイックソート
+% 15. Quick sort
 declare
 fun {QuickSort Ls}
    fun {QuickSortIter Ls E}
