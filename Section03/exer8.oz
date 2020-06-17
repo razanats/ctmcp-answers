@@ -1,6 +1,6 @@
-% 8.反復的append
+% 8. Iterative append
 
-% 「値だけを計算するように制限する」は「完全値だけを計算する」という意味。
+% "Limit to calculate only values" means "calculate only complete values".
 fun {Append Xs Ys}
    fun {ReverseAppendIter Xs Ys}
       case Xs
