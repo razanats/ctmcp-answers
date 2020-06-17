@@ -1,9 +1,9 @@
-% 5.反復的SumList
+% 5. Iterative SumList
 
 /*
-初期状態：(0,Xs)
-中間状態：（現在の結果,残りのリスト）= (A,Ys)
-次の状態との関係：(A,Ys) => (A+Y,Yr)
+Initial state: (0,Xs)
+Intermediate state: (current result, remaining list) = (A,Ys)
+Relation with the following state: (A,Ys) => (A+Y,Yr))
 */
 
 declare
