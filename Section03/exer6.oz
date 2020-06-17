@@ -1,4 +1,4 @@
-% 6.状態不変表明
+% 6. State unchanged expression
 
 
 fun {Reverse Xs}
@@ -12,10 +12,10 @@ in
    {IterReverse Xs nil}
 end
 
-% 中間状態：（残りのリスト、すでに逆転されたリスト）= (Ys,Zs) なので、
+% Intermediate state: (remaining list, already inverted list) = (Ys,Zs), so
 % P((Ys,Zs)) ::= ( Xs = Append(Reverse(Zs),Ys) )
 
-% 証明
-% ■最初にP(初期状態）を証明する。これは、初期状態=（Xs,nil）から、右辺＝Append(nil,Xs)であり、これはXsに等しい。
-% ■P（S_(i))（最終状態ではない）が真だと仮定する。このとき、Xs = Append(Reverse(Zs),Ys)である。S_(i+1)は'case'文からZ|Zr=Zsとすると、(Zr,Z|Ys)で、{Append Reverse(Zr) Z|Ys}={Append Reverse(Zs) Ys}は明らかなので、仮定より、P(S_(i+1))=(Xs=Append(Reverse(Zr),Z|Ys))は真。（Reverse(Zs)から、Reverse(Zr）の導出は省略した）
-% ※S_(final)（最終状態）=(nil,Zs)で、'case'文より、この関数はZsを返す。Xs=Append(Reverse(Zs),nil)すなわちXs=Reverse(Zs)なので、この結果は正しいことがわかる。（ここから考えると、Reverse(Xs)=Append(Zs,Reverse(Ys))の方が適切な表明だった）
+% Proof
+% ■ First, prove P (initial state). This is from the initial state=(Xs,nil) to the right side=Append(nil,Xs), which is equal to Xs.
+% ■ Suppose P(S_(i)) (not the final state) is true. At this time, Xs=Append(Reverse(Zs),Ys). If S|(i+1) is Z|Zr=Zs from the'case' statement, {Append Reverse(Zr) Z|Ys}={Append Reverse(Zs) Ys} is apparent in (Zr,Z|Ys). So, from the assumption, P(S_(i+1))=(Xs=Append(Reverse(Zr),Z|Ys)) is true. (Derivation of Reverse(Zr) from Reverse(Zs) is omitted.)
+% *S_(final) (final state) = (nil,Zs), and from the'case' statement, this function returns Zs. Since Xs=Append(Reverse(Zs),nil), that is, Xs=Reverse(Zs), this result is correct. (From this point of view, Reverse(Xs)=Append(Zs,Reverse(Ys)) was a more appropriate statement.)
