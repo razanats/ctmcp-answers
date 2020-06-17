@@ -1,14 +1,14 @@
-# 読み始めてから読み終わるまで
+# From start to finish
 
-二年前の夏くらいに読み始めて、ちょくちょくと読み進めていた「コンピュータ・プログラミングの概念・技法・モデル」という本をひと通り読み終えました。まあ読んだと言っても章末の練習問題は途中からやっていないので、おおよそ重要なことは一通り頭に入れた、という感じでしょうか。章によりますが大体２〜４回くらい読みました。
+I started reading about two years ago in the summer, and finished reading the book "Concepts, Techniques, and Models of Computer Programming," which I was constantly reading. Well, even though I read it, I didn't do the exercises at the end of the chapter from the middle, so I think I thought about all the important things. I read it about 2 to 4 times depending on the chapter.
 
-この本はちょうど自分がコンピュータ・サイエンスを学び始めたときから読み始めた本なので、過程をまとめることでこれまでどういうことを考えて何を学び、他にどういうことが足りていないか、というようなことを整理してみたいと思います。
+This book was just read when I started to study computer science, so by summarizing the process, I thought about what I had learned and what else I was missing. I want to sort things out.
 
-## 各章まとめ
+## Summary of each chapter
 
-読んだことを整理するために書いた各章ごとのまとめ。
+A summary of each chapter I wrote to organize what I read.
 
-- [序文：プログラミングを学ぶにあたって](http://d.hatena.ne.jp/Altech/20110101/1293896398) - 2011-01-01
+- [Introduction: Learning programming](http://d.hatena.ne.jp/Altech/20110101/1293896398) - 2011-01-01
 - [CTMCP 1章：プログラミング概念入門](http://d.hatena.ne.jp/Altech/20110104/1294156496) - 2011-01-04
 - [CTMCP 2章：宣言的計算モデル](http://d.hatena.ne.jp/Altech/20110720/1311091857) - 2011-07-20
 - [CTMCP 3章：宣言的プログラミング技法](http://d.hatena.ne.jp/Altech/20110804/1312404118) - 2011-08-04
@@ -24,25 +24,25 @@
 - [CTMCP 12章：制約プログラミング](http://d.hatena.ne.jp/Altech/20121023/1350987658) - 2012-10-23
 
 
-## きっかけと動機
+## Motivation and motivation
 
-大学一年の夏休みに「情報工学科に入ったわけだしコンピュータ・サイエンスのちゃんとした本を一冊読みたいなー」と思っていたところ、サークルのOBで当時なぜか部室に常駐していたdraftcodeさんからこの本を紹介してもらいました。ただこの当時はプログラミング経験やコンピュータ・サイエンス関係の基礎知識がほとんどなかったので、前提となる部分も一緒に読み解かなければならず、頁数としてはあまり捗りませんでした。
+When I was thinking that "I entered the department of information engineering and want to read a proper computer science book" during the summer vacation of the first year of university, this is from the draftcode who was resident in the club room for some reason at the OB of the circle. I had you introduce a book. However, at this time, I had almost no programming experience or basic knowledge about computer science, so I had to understand the prerequisites as well, and the number of pages was not so good.
 
-そういう状態でも無理矢理読み進めたのは、特定のプログラミング言語の「仕様」の上にプログラミングを覚えてしまえば、そういう先入観で考えるようになってしまう（そういう先入観は取り去るのが難しい）という予感があったからでした。ちなみに現時点では、これは半分正しくて半分間違っている、と思っています。そういう入り方をした場合でも多くの異なる言語に触れていけばおそらくだんだんと本質的な違いが整理されてくる。それに対してこの本はそういう本質を最初から扱ってそれに基いてプログラミングを教える本で、自分はそうしたいし、そうすることでより歪みなく本質的な理解をしたいと思ったのでした。
+Even in such a situation, I forcibly read that there was a premonition that if I learned programming on the "specification" of a specific programming language, I would think with that preconception (it is difficult to remove such preconception). It was because By the way, I think this is half right and half wrong at the moment. Even with such a way of entering, if you touch many different languages, the essential differences will gradually be sorted out. In contrast, this book is a book that deals with such essence from the beginning and teaches programming based on it, and I wanted to do so, and I wanted to have a more fundamental understanding without distortion.
 
-## どういう本？
+## What kind of book?
 
-この本は深いところに裏付けされて書いてある本なのでどのくらいのものが得られるかというのは読み込み次第で、自分も折に触れて関係する部分を読み返したいと思っているのですが、扱っていることは題の通りプログラミングです。プログラミングが次の３つに別れるとして、
+Since this book is written with deep backing, how much you can get is up to you to read. That is programming as the title says. If programming is divided into the following three,
 
-1. 概念と技法
-2. アルゴリズムとデータ構造
-3. プログラム設計とソフトウェアエンジニアリング
+1. Concepts and techniques
+2. Algorithms and data structures
+3. Program design and software engineering
 
-このうちの1.を徹底的に扱い、2.と3.は入門程度に扱います。そして1.と3.は強い相互関係がある（と序文で言っています）。例えば「合成可能」あるいは「合成可能なコンポーネント」という概念と合成可能なコンポーネントを性能良く実現するための技法（e.g. メモ化）は、疎結合なプログラムを設計するにあたって必要な概念と技法です。自分の印象ですが、一般的にプログラミング言語にどういう機能があってどういう技法が可能というのを解説するプログラミング入門書は多くありますが、それと同時により大きな立場（つまり3.の観点）でどうすべきかということが説明されることはあまりないように思います。対してこの本は1.と3.を並行的に教えているので、3.についても比較的しっかりとした土台ができるように感じました。例えば、ソフトウェア・エンジニアリングの古典である「人月の神話」と言った本を読んでも（それほど開発経験はなくても）すんなりと納得できました。一方で、アルゴリズムとデータ構造については基本的なところは抑えてはいますが、まだまだ足りないと感じています。どうしよう。
+Of these, 1. will be treated thoroughly, and 2. and 3. will be treated as an introduction. And 1. and 3. have a strong interrelationship (as I said in the introduction). For example, the concept of "synthesizable" or "synthesizable component" and the technique (e.g. memoization) for realizing a composable component with good performance are the concepts and techniques necessary for designing loosely coupled programs. In my impression, in general, there are many programming introductory books that explain what functions programming languages ​​have and what techniques are possible, but at the same time, what to do from a larger standpoint (that is, perspective 3). I don't think that is often explained. On the other hand, this book teaches 1. and 3. in parallel, so I felt that I could build a relatively solid foundation for 3. too. For example, I read a book called "Myth of the Moon", a classic of software engineering (even if I didn't have much development experience), and I was completely satisfied. On the other hand, although the basics of algorithms and data structures are suppressed, I feel that they are still insufficient. What should I do.
 
-## これから
+## from now on
 
-やってみると誰でも普通にわかることですが、コンピューティング、情報システム、情報技術といった情報を対象としたエンジニアリングあるいはコンピュータを使ったエンジニアリングというのは別にプログラミングだけから構成されているわけではなく、その意味でこの本は一部に過ぎません。まずハードウェアがないとプログラミングはできませんし、プログラミングする対象についての知識があって的確に問題設定ができないとそもそもプログラミングしても意味が無い。あとはプラットフォーム（OS,ブラウザ, 言語処理系）とか環境（ライブラリ, コミュニティ, 人）とか解決手法とか自然言語とか。たぶんまだまだ見えてないものがあるはず。
+It is generally understood by anyone who tries it, but engineering for information such as computing, information system, information technology or engineering using a computer does not consist only of programming separately, In a sense, this book is only part. First of all, programming is not possible without hardware, and it is meaningless to program if there is knowledge about the programming target and problem setting cannot be done accurately. The rest is the platform (OS, browser, language processing system), environment (libraries, community, people), solution method, and natural language. Maybe there are some things we can't see yet.
 
-そもそも自分がなにをしたいのかというのはまだ特に定まっていないのですが、日常を楽に（あるいは楽しく）するための手段としてコンピューティングは対象が広くて面白いと思いますし、何か思い立ったときに自分でできるようにしておきたいと思っています。ずいぶん抽象的な話になってしまったので具体的な話に戻すと、僕は、Ozから始めてRubyに至るまで抽象度の高いレイヤーにいることが多く、低レイヤーな部分を正確に理解していないなあと感じているので、とりあえず次はOSについて勉強してみようかなあとかなんとなく思ってます。
+I don't know what I want to do in the first place, but I think computing is a broad and interesting way to make everyday life easier (or even more fun). I want to be able to do it myself. It turned out to be a very abstract story, so when I go back to the concrete story, I tend to be in a layer with a high degree of abstraction from Oz to Ruby, and I understand exactly the low layer part. I feel that there isn't any, so I'm wondering if I should study OS next time.
 
