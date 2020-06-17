@@ -1,4 +1,4 @@
-% 12.リストの平坦化の計算量
+% 12. List flattening complexity
 fun {Flatten Ls}
    case Ls
    of nil then nil
@@ -8,42 +8,42 @@ fun {Flatten Ls}
 end
 
 /*
-サブルーチンの計算量について確認しておく。IsListは一定時間。Appendは一つ目のリストの長さに比例する計算量を持つ。（一つ目のリストの長さをnとすると、T_Append=k4*nとする。）
+Check the calculation amount of the subroutine. IsList is a fixed time. Append has a calculation amount proportional to the length of the first list. (T_Append=k4*n, where n is the length of the first list.)
 
-まず、最悪時の入力Lsは、要素数n、入れ子の深さ最大kという条件の元では、以下のようになると考えられる。
+First, it is considered that the worst case input Ls is as follows under the condition that the number of elements is n and the maximum nesting depth is k.
 [ ... [ A1 A2 ... An ] ... ]
-手続きFlattenの計算量、T_Flatten(size(Ls))を求めたいので、size(Ls)を特徴付けるパラメータとして、
+Since I want to obtain the calculation amount of procedure Flatten, T_Flatten(size(Ls)), as a parameter characterizing size(Ls),
 size(Ls) = (n,k)
-とする。（ただし、nil = [ ] は、(0,1)とする）
-'case'文のそれぞれの場合について、漸化式を立てる。
+And (However, nil = [] is (0,1))
+Create a recurrence formula for each case of the'case' statement.
 T_Flatten((0,1)) = k1
-T_Flatten((n,1)) = k2 + T_Flatten((n-1,1)) (n > 0 のとき)
-T_Flatten((n,k)) = k3 + T_Flatten((n,k-1)) + T_Flatten((0,1)) + k4*n（n > 0, k > 0 のとき）
-これより、(k3+k1 ::= k5として)
+T_Flatten((n,1)) = k2 + T_Flatten((n-1,1)) (when n > 0)
+T_Flatten((n,k)) = k3 + T_Flatten((n,k-1)) + T_Flatten((0,1)) + k4*n（when n > 0, k > 0）
+Than this (as k3+k1 ::= k5)
 T_Flatten((n,k))
 = (k5 + k4*n) + T_Flatten((n,k-1))
 = (k5 + k4*n) + ... + (k5 + k4*n) + T_Flatten((n,1))
 = (k-1)*(k5 + k4*n) + k2 + ... + k2 + k1
 = (k-1)*(k5 + k4*n) + n*k2 + k1
-となり、T_Flatten((n,k))は、O(n*k).
+Next to T_Flatten((n,k))は、O(n*k).
 
-注1：本の計算量の定義では、'case'文に対しては全てのケースの最大を取れってなっているけれども、ありえないケースを採用するのはおかしい。「完全にランダム」な場合、最悪のケースを取るのは理解できるが、そうでない場合は、個別に漸化式を立てるのが適切だと思う。
+Note 1: In the definition of computational complexity of the book, the maximum of all cases is taken for the'case' statement, but it is strange to adopt an impossible case. It's understandable to take the worst case in the case of "completely random", but if not, I think it's appropriate to formulate a recurrence formula individually.
 */
 
-/* 最悪ケースその2
-サブルーチンの計算量について確認しておく。IsListは一定時間。Appendは一つ目のリストの長さに比例する計算量を持つが、以下に述べるように、一つ目のリストの長さは常に1なので、定数時間。
+/* Worst case 2
+Check the calculation amount of the subroutine. IsList is a fixed time. Append has a calculation amount proportional to the length of the first list, but as described below, the length of the first list is always 1, so a constant time.
 
-まず、最悪時の入力Lsは、要素数n、入れ子の深さ最大kのとき、以下のようになると考えられる。
+First, the worst case input Ls is considered to be as follows when the number of elements is n and the maximum nesting depth is k.
 [ [...[A1]...] [...[A2]...] ... [...[An]...] ]
-ここで、[...[At]...]はk-1個の入れ子である。これを入力として考える。
-手続きFlattenの計算量、T_Flatten(size(Ls))を求めたいので、size(Ls)を特徴付けるパラメータとして、
+Here, [...[At]...] is k-1 nesting. Consider this as input.
+Since we want to obtain the computational complexity of the procedure Flatten, T_Flatten(size(Ls)), here is a parameter that characterizes size(Ls) and Here, [...[At]...] is k-1 nesting. Consider this as input. do it,
 size(Ls) = (n,k)
-とする。（ただし、n=0のとき、kの値に関わらずnilを表すとする）
-'case'文のそれぞれの場合について、漸化式を建てる。
-T_Flatten((0,k)) = k1 （n = 0, k:任意 のとき）
+And (However, when n=0, it means nil regardless of the value of k.)
+Build a recurrence formula for each case of the'case' statement.Solve this and still O(n*k).
+T_Flatten((0,k)) = k1 (n = 0, k: when arbitrary)
 T_Flatten((n,k)) = k2 + T_Flatten((1,k-1)) + T_Flatten((n-1,k))（n > 0, k > 0 のとき）
 T_Flatten((1,0)) = k3 + T_Flatten（（0,0）） （n = 1, k = 0 のとき）
-これを解いて、やはりO(n*k).
+Solve this and still O(n*k).
 */
 
 declare
@@ -68,7 +68,7 @@ in
 end
 
 /*
-詳細は略。
-連結が一定時間というところだけが違うはずなので、上記最悪ケース1の場合は、O(n)で、ケース2の場合はO(k*n)になるはず。
-従って、平均時間はともかく、最悪時間は変わらないと思われる。
+Details are omitted.
+The only difference is that the connection is constant time, so in the worst case 1 above it will be O(n), and in case 2 it will be O(k*n).
+Therefore, the worst time seems to be the same regardless of the average time.
 */
