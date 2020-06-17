@@ -1,6 +1,6 @@
-% 4.if文とcase文
-% (a)case文によるif文の定義
-% if文：if <x> then <s>1 else <s>2
+% 4. if and case statements
+% (a) Definition of if statement by case statement
+% if X：if <x> then <s>1 else <s>2
 
 if X then <s>1 else <s>2 end ::=
 
@@ -11,10 +11,10 @@ of true then
    <s>2
 end
 
-/* 言語抽象として考えるなら、さらに例外処理の節を'else'節として追加すると正確。*/
+/* If you think of it as a language abstract, it is correct to add an exception handling clause as a 'else' clause.*/
    
 
-% (b)if文によるcase文の定義
+% (b) Definition of case statement by if statement
 
 case <x> of <label>(<feat>1:<x>1 ... <feat>n:<x>n) then <s>1 else <s>2 end ::=
 
@@ -26,4 +26,4 @@ if {Label <x>}==<label> then
    else <s>2 end
 else <s>2 end
 
-% ※動作未確認
+% Action not confirmed
