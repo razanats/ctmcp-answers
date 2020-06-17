@@ -1,4 +1,4 @@
-% 16.末尾再帰の畳み込み
+% 16. Tail recursion convolution
 declare
 fun {Convolute Xs Ys}
    proc {ConvoluteIter Xs Ys ?Zs}
