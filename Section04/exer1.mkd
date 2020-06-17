@@ -1,4 +1,4 @@
-# スレッドの意味
+# Meaning of thread
 
 	local B in
 		thread B=true end
@@ -15,13 +15,13 @@
 6.`B=true`
 7.`B=false`
 
-とする。
+And
 
-* 同一スレッドでの実行順序
-* ブロック、スレッド生成による因果順序
-* 単一化失敗による例外
+* Execution order in the same thread
+* Causal order due to block and thread generation
+* Exception due to unification failure
 
-を考慮すると、ありうる実行は、以下。
+Considering, the possible executions are as follows.
 
 * 1,2,3,6,4,5,7
 * 1,2,3,6,4,7
@@ -33,14 +33,14 @@
 * 1,2,6,3,4,7
 * 1,2,6,3,7
 
-### メモ
-問題を一般化すると、リスト内包表記で、全通りの実行を生成節で作ってやって、適切に制約条件をガード節として付けてやる感じで解けそう。
+### notes
+If you generalize the problem, you can solve it by feeling that you can make all kinds of executions by generating clauses in list comprehension notation and add constraints appropriately as guard clauses.
 
-* スレッド生成文Iと、その文の最初の実行Iiに対して`I<Ii`
-* 同一スレッド内の実行Ii,..,Ijに対して`Ii<..<Ij`
-* ある識別子Aを活性化条件にする実行Iと、Aを束縛する操作Ia,..に対して`I > min(Ia,..)`
+* `I<Ii` for the thread creation statement I and the first execution Ii of the statement
+* `Ii<..<Ij` for executions Ii,..,Ij in the same thread
+* `I> min(Ia,..)` for the execution I that makes an identifier A an activation condition and the operation Ia,.. that binds A
 
-みたいなのでいけそう。単一化失敗なども含めて例外を考慮すると、実行順序がプログラムの実行（意味）に踏み込まなきゃいけなくなってスマートにできなげ。
+It seems like it's good If you consider exceptions including unification failure, you have to step into the execution (meaning) of the program in the execution order, so you can do smart.
 
 ## (b)
-`B=true`など。
+`B=true` etc.
