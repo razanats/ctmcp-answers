@@ -1,16 +1,16 @@
-% 4.反復的階乗計算
+% 4. Iterative factorial calculation
 
 /*
 .---------- N -----------.
 e1 e2 ... ei e(i+1) ... en
              '----i-1----'
 
-現在の計算結果:A
-残りの計算:i-1〜1
-つまり、中間状態は(A,i)で表せる。
-さらに、初期状態は、(1,N)である。
-ある状態(1,N)の次の状態は(A*i,i-1)である。
-ここから、次の関数が得られる。
+Current calculation result: A
+Remaining calculation: i-1 ~ 1
+That is, the intermediate state can be represented by (A,i).
+Furthermore, the initial state is (1,N).
+The next state of a state (1,N) is (A*i,i-1).
+From this, the following function is obtained.
 */
 
 fun {Fact N}
