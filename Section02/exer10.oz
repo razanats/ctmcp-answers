@@ -1,4 +1,4 @@
-% 10.核言語への展開
+% 10. Expansion to nuclear languages
 fun {SMerge Xs Ys}
    case Xs#Ys
    of nil#Ys then Ys
@@ -32,4 +32,4 @@ SMerge = proc {$ Xs Ys ?S}
 	       end
 	    end
 	 end
-% データ構造中の呼び出しでは、束縛が先に行われる。
+% For calls in the data structure, binding is done first.
