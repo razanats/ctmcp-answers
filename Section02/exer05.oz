@@ -1,4 +1,4 @@
-% 5.case文
+% 5.case text
 declare Test
 proc {Test X}
    case X
@@ -20,7 +20,7 @@ end
 {Test a|a}     % => 1
 {Test '|'(a b c)} % => 6
 
-% 核言語に翻訳すると以下のようになる。
+% The following is a translation into the nuclear language.
 declare Test
 proc {Test X}
    case X of '|'(a Z) then {Browse 'case'(1)}
@@ -29,7 +29,7 @@ proc {Test X}
       else
 	 case X of '|'(Y Z) then
 	    if Y==Z then {Browse 'case'(3)}
-	    else % andthenはelseで以降を二重に記述しなければならない
+	    else % and then has to write the following twice in else
 	       case X of '|'(Y Z) then {Browse 'case'(4)}
 	       else
 		  case X of f(Y) then {Browse 'case'(5)}
