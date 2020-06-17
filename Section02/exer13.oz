@@ -1,4 +1,4 @@
-% 13.単一化
+% 13. Unification
 declare X Y Z W
 X = [a Z]
 Y = [W b]
@@ -6,6 +6,6 @@ X = Y
 {Browse X#Y#Z#W}
 
 /* x = ['a' z], y = [w 'b'], x = y
-をベクトルを含む連立方程式と見なすと、それをどのように解いても同じ解が得られるのは明らか。*/
+Obviously, if you think of as a simultaneous equation containing a vector, you can get the same solution no matter how you solve it.*/
 
-/* 注：単一化をどのような順序で行っても結果が同じになるというのは、ある連立方程式をどのような順番（手順）で解いても同じ結果になるということにたぶん含まれていて、それは「等しいものは等しいものに置き換えられる」という参照透明性が前提となる。このことから、単一代入変数であること（値可変変数でないこと）が順序独立性のために必要であるということがわかる。*/
+/* Note: The fact that the results are the same regardless of the order of unification probably means that the same result can be obtained by solving a system of equations in any order (procedure). , It is premised on the reference transparency that "equals are replaced by equals". From this, it can be seen that a single substitution variable (not a variable variable) is necessary for order independence.*/
