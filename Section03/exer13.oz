@@ -1,4 +1,4 @@
-% 13.行列操作
+% 13. Row and column operations
 declare AddMat SubMat MulMat TransMat
 
 local
@@ -25,7 +25,7 @@ in
    end
 end
 
-fun {TransMat Mat} % 効率微妙？
+fun {TransMat Mat} % Subtle efficiency?
    fun {TransMatIter Mat ?S}
       case Mat of X|Xr then
 	 {TransMatIter Xr {TransLine X S}}
