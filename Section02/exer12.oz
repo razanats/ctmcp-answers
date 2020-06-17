@@ -1,7 +1,7 @@
-% 12.finally節を持つ例外
-% 要件は、<s>1を実行後、<s>2を実行することと、例外が発生したのであれば、その例外を確実に外まで伝えること、の2点。従って、以下のようになる
+% 12. Exception with finally clause
+% There are two requirements: executing <s>1 and then executing <s>2, and if an exception occurs, ensure that the exception is communicated to the outside. Therefore,
 
-% 値可変変数が使えるのであれば、こんな感じ。
+% If you can use variable variables, it looks like this.
 try <s>1 finally <s>2 end ::=
 
 local Boolean = {NewCell false} E in
@@ -15,5 +15,5 @@ local Boolean = {NewCell false} E in
    if Boolean then raise E end end
 end
 
-% セルつかっちゃったー。束縛されているかを確認するIsBoundが欲しい。
+% I used a cell. I want IsBound to see if I'm bound.
 
