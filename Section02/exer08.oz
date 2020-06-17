@@ -1,7 +1,7 @@
-% 8.制御抽象
+% 8. Control abstraction
 % (a)
 <expression>1 andthen <expression>2 ::= if <expression>1 then <expression>2 else false end
-% 同じ結果になる。({BP1}がfalseのとき、{BP2}は呼び出されない)
+% Produces the same result. ({BP2} is not called when {BP1} is false)
 
 % (b)
 <expression>2 orelse <expression>2 ::= if <expression>1 then true else <expression>2 end
