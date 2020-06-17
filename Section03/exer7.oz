@@ -1,4 +1,4 @@
-% 7.別のappend関数
+% 7. Another append function
 fun {CorrectAppend Ls Ms}
    case Ls
    of nil then Ms
@@ -13,4 +13,4 @@ fun {Append Ls Ms}
    end
 end
 
-% 内側の再帰呼び出しに注目すると、第二引数がnilになることがないので、終了しない。
+% Focusing on the inner recursive call, it does not terminate because the second argument never becomes nil.
