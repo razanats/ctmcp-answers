@@ -1,2 +1,2 @@
-% 1.実数の絶対値
-%  A."0"ではなく"0.0"にすればよい
+% 1. Absolute value of real number
+%  A. You can set it to "0.0" instead of "0"
