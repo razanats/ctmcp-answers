@@ -9,19 +9,19 @@ This book was just read when I started to study computer science, so by summariz
 A summary of each chapter I wrote to organize what I read.
 
 - [Introduction: Learning programming](http://d.hatena.ne.jp/Altech/20110101/1293896398) - 2011-01-01
-- [CTMCP 1章：プログラミング概念入門](http://d.hatena.ne.jp/Altech/20110104/1294156496) - 2011-01-04
-- [CTMCP 2章：宣言的計算モデル](http://d.hatena.ne.jp/Altech/20110720/1311091857) - 2011-07-20
-- [CTMCP 3章：宣言的プログラミング技法](http://d.hatena.ne.jp/Altech/20110804/1312404118) - 2011-08-04
-  - [宣言的(declarative)であるとは](http://d.hatena.ne.jp/Altech/20110801/1312131972)
-- [CTMCP 4章：宣言的並行性](http://d.hatena.ne.jp/Altech/20120318/1332006007) - 2012-03-18
-  - [非決定性について少し](http://d.hatena.ne.jp/Altech/20120318/1332056930)
-- [CTMCP 5章：メッセージ伝達並行性](http://d.hatena.ne.jp/Altech/20120322/1332364501) - 2012-03-22
-- [CTMCP 6章：明示的状態](http://d.hatena.ne.jp/Altech/20120506/1336258094) - 2012-03-22
-- [CTMCP 7章：オブジェクト指向プログラミング](http://d.hatena.ne.jp/Altech/20120515/1337090224) - 2012-05-15
-- [CTMCP 8章：状態共有並行性](http://d.hatena.ne.jp/Altech/20121021/1350830918) - 2012-10-21
-- [CTMCP 9章：関係プログラミング](http://d.hatena.ne.jp/Altech/20121021/1350832754) - 2012-10-21
-- [CTMCP 11章：分散プログラミング](http://d.hatena.ne.jp/Altech/20121021/1350835101) -2012-10-21
-- [CTMCP 12章：制約プログラミング](http://d.hatena.ne.jp/Altech/20121023/1350987658) - 2012-10-23
+- [CTMCP Chapter 1: Introduction to Programming Concepts](http://d.hatena.ne.jp/Altech/20110104/1294156496) - 2011-01-04
+- [CTMCP Chapter 2: Declarative Computation Model](http://d.hatena.ne.jp/Altech/20110720/1311091857) - 2011-07-20
+- [CTMCP Chapter 3: Declarative Programming Techniques](http://d.hatena.ne.jp/Altech/20110804/1312404118) - 2011-08-04
+  - [What is declarative?](http://d.hatena.ne.jp/Altech/20110801/1312131972)
+- [CTMCP Chapter 4: Parallelism of the Declaration](http://d.hatena.ne.jp/Altech/20120318/1332006007) - 2012-03-18
+  - [A little bit about nondeterminism](http://d.hatena.ne.jp/Altech/20120318/1332056930)
+- [CTMCP Chapter 5: Message Transmission Concurrency](http://d.hatena.ne.jp/Altech/20120322/1332364501) - 2012-03-22
+- [CTMCP Chapter 6: Express State](http://d.hatena.ne.jp/Altech/20120506/1336258094) - 2012-03-22
+- [CTMCP Chapter 7: Object Oriented Programming](http://d.hatena.ne.jp/Altech/20120515/1337090224) - 2012-05-15
+- [CTMCP Chapter 8: State Common Parallelism](http://d.hatena.ne.jp/Altech/20121021/1350830918) - 2012-10-21
+- [CTMCP Chapter 9: Relational Programming](http://d.hatena.ne.jp/Altech/20121021/1350832754) - 2012-10-21
+- [CTMCP Chapter 11: Distributed Programming](http://d.hatena.ne.jp/Altech/20121021/1350835101) -2012-10-21
+- [CTMCP Chapter 12: Constraint Programming](http://d.hatena.ne.jp/Altech/20121023/1350987658) - 2012-10-23
 
 
 ## Motivation and motivation
