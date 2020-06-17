@@ -1,4 +1,4 @@
-% 3.二分法
+% 3. Dichotomy
 declare
 fun {BscMeth F A B}
    X = (A+B)/2.0
@@ -36,5 +36,5 @@ end
 
 {Browse {BscMeth fun{$ X} X*X - 2.0 end 0.0 2.0}}
 
-% AとBを人が恣意的に与えるのが微妙だけど二分法自体の問題。
+% It is delicate that people give A and B arbitrarily, but the problem of dichotomy itself.
 
