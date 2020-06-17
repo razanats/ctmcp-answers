@@ -1,4 +1,4 @@
-% 9.末尾再帰
+% 9. Tail recursion
 fun {Sum1 N}
    if N==0 then 0 else N+{Sum1 N-1} end
 end
@@ -6,8 +6,8 @@ fun {Sum2 N S}
    if N==0 then S else {Sum2 N-1 N+S} end
 end
 
-% (a) 核言語への展開
-% ※'else'節だけ展開する。
+% (a) Expansion to nuclear language
+% * Expand only the 'else' clause.
 declare 
 fun {Sum1 N}
    if N == 0 then 0
@@ -35,8 +35,8 @@ Sum1 = proc {$ N ?S}
 	     S = N + Mid
 	  end
        end
-% N = 0 のとき：( [ ({Sum1 NMid Mid},{N=>n1,NMid=>n0,S=>m1,Mid=>m0}),(S=N+Mid,{N=>n1,NMid=>n0,S=>m1,Mid=>m0}),...,(S=N+Mid,{N=>n10,NMid=>n9,S=>res,Mid=>m9}) ], {res,m9,...,m0,n10=10,...,n0=0} )
-% のように、意味スタック、格納域ともにNに比例する。
+% N = 0 when: ( [ ({Sum1 NMid Mid},{N=>n1,NMid=>n0,S=>m1,Mid=>m0}),(S=N+Mid,{N=>n1,NMid=>n0,S=>m1,Mid=>m0}),...,(S=N+Mid,{N=>n10,NMid=>n9,S=>res,Mid=>m9}) ], {res,m9,...,m0,n10=10,...,n0=0} )
+% As shown in, both the semantic stack and the storage area are proportional to N.
 
 Sum2 = proc {$ N S ?Sn}
 	  if N == 0 then Sn = S
@@ -46,11 +46,11 @@ Sum2 = proc {$ N S ?Sn}
 	     {Sum2 NMid SMid Sn}
 	  end
        end
-% N = 0 のとき：( [ ({Sum2 NMid Mid Sn},{Sn=>res,N=>n1,NMid=>n0,S=>s1,SMid=>s2}) ], {res,n10=10,...,n0=0,s10=10,...,s0=55} )
-% (GCによる格納域の最適化）=> {res,n1=1,n0=0,s1=54,s0=55}
-% のように、意味スタックは常に一定数以下。格納域も、到達可能な変数は常に一定数以下。
+% N = 0 when:( [ ({Sum2 NMid Mid Sn},{Sn=>res,N=>n1,NMid=>n0,S=>s1,SMid=>s2}) ], {res,n10=10,...,n0=0,s10=10,...,s0=55} )
+% (Optimized storage area by GC) => {res,n1=1,n0=0,s1=54,s0=55}
+% Like, the meaning stack is always below a certain number. In the storage area, the number of variables that can be reached is always less than a certain number.
 
 
 % (c)
-{Browse {Sum1 100000000}} % => 20秒ほど
-{Browse {Sum2 100000000 0}} % => 4分以上（不明） スタックがオーバーフローする？
+{Browse {Sum1 100000000}} % => About 20 seconds
+{Browse {Sum2 100000000 0}} % => Over 4 minutes (unknown) Stack overflow?
