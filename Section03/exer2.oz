@@ -1,4 +1,4 @@
-% 2.立方根
+% 2. Cubic root
 declare
 fun {Cbrt X}
    fun {CbrtIter Guess}
