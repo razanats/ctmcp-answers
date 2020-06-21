@@ -1,4 +1,4 @@
-% ポートを実装すること
+% Implement ports
 
 declare
 proc {NewWrapper Wrap Unwrap}
@@ -32,4 +32,4 @@ local Wrap Unwrap in
    end
 end
 
-% ポートは抽象的には一意の定数とストリームの末尾の対として保持されているんだけど、実際はポート生成のときに使うNewCell自体が一意の識別子を生成するのでそれが末尾を指すようにしてやればいい。
+% The port is stored as a pair of a unique constant and the end of the stream in the abstract, but actually NewCell used when creating the port generates a unique identifier, so it should be pointed to the end...
