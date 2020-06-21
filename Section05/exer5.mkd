@@ -1,4 +1,4 @@
-# 5.並行フィルタ
+# 5. Parallel filters
 
 	declare
 	proc {NewPortClose ?S ?Send ?Close}
@@ -27,36 +27,35 @@
 		{Close}
 	end
 	
-## (a)次を実行するとどうなるか？
+## (a) What happens when you do the following?
 
 	declare Out
 	{ConcFilter [5 1 2 4 0] fun {$ X} X>2 end Out}
 	{Show Out}
 
-`[5 4]`と表示された。5章の意味に従えば、Send操作は直列的に行われるので、メッセージが受信される前にConcFilterが終了するということはないことに注意する。ConcFilterは並行実行するため非決定性であり、`[5 4]`または`[4 5]`という表示がありうる。
+It is displayed as `[5 4]`. Note that according to the meaning of Chapter 5, the Send operation is serial, so the ConcFilter does not exit before the message is received. ConcFilter is non-deterministic because it executes in parallel, and can be displayed as `[5 4]` or `[4 5]`.
 
-## (b)次を実行するとどうなるか？
+## (b) What happens when you do the following?
 
 	declare Out
 	{ConcFilter [5 1 2 4 0] fun {$ X} X>2 end Out}
 	{Delay 1000}
 	{Show Out}
 
-ConcFilterは全てのスレッドが終了するまでブロックするので上に同じ。
+Same as above because ConcFilter blocks until all threads are finished.
 
-## (c)次を実行するとどうなるか？
+## (c) What happens when you do the following?
 
 	declare Out A
 	{ConcFilter [5 1 A 4 0] fun {$ X} X>2 end Out}
 	{Delay 1000}
 	{Show Out}
 
-ConcFilterは全てのスレッドが(ry)ので何も表示されない。A=3を束縛すると、`[5 4 3]`などのように表示される。
+ConcFilter does not display anything because all threads are (ry). If you bind A=3, it will be displayed as `[5 4 3]`.
 
-## (d)入力リストの要素数nに対するConcFilterの実行回数の計算量は？Filterとの差は？
+## (d) What is the amount of calculation of the execution count of ConcFilter for the number n of elements in the input list? What is the difference with Filter?
 
-実行回数の計算量はO(n).
+The number of executions is O(n).
 
-ConcFilterとFilterの差について。Filterはリストのある要素でブロックすればそれ以降はそれが解除されるまで計算されないのに対して、ConcFilterは計算出来る要素は全て計算する。使う計算資源の総量はスレッドを使う分ConcFilterの方が多いが、処理が途中でブロックする可能性がありリストが十分長いのであればConcFilterの方が実行時間として良い。
-
+About the difference between ConcFilter and Filter. If Filter blocks with an element in the list, it will not be calculated after that until it is cleared, whereas ConcFilter will calculate all the elements that can be calculated. ConcFilter has more total computational resources to use because threads are used, but if the list is long enough because processing may block during processing, ConcFilter is better as execution time.
 
