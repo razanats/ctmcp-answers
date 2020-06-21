@@ -1,4 +1,4 @@
-% セルを使う状態
+% State of using cells
 
 declare
 fun {SumList Xs S}
