@@ -1,49 +1,49 @@
-# 第十一章：分散プログラミング
+# Chapter 11: Distributed Programming
 
-## 分散システムの分類
-この章では、オープンな分散システムを扱う。以下のように、これはクラスタコンピューティングよりも一般的な分散システムである。
-- メモリ共有マルチプロセッサ --分散--> 分散メモリマルチプロセッサ --部分的失敗--> 部分的失敗のある分散メモリマルチプロセッサ --オープン性--> オープン分散システム
-  - 例えば高性能計算の大規模なものとしてスーパーコンピュータ上でのプログラミングがあるが、これは「部分的失敗のある分散メモリマルチプロセッサ」であり、オープン分散システムではない。
+## Distributed system classification
+This chapter deals with open distributed systems. This is a more general distributed system than cluster computing, as follows.
+-Memory shared multiprocessor --Distributed --> Distributed memory multiprocessor --Partial failure --> Distributed memory multiprocessor with partial failure --Openness --> Open distributed system
+  -For example, large-scale high-performance computing is programming on a super computer, which is a "distributed memory multiprocessor with partial failure", not an open distributed system.
 
-## 分散システム上でのプログラミング
-- 問い：分散プログラミングは並列プログラミングの一種に過ぎず、従ってこれまでの並行プログラミングの技法がそのまま使える、か？
-- 答え：次のような理由で、そう単純には行かない。
-  - プロセスが別なのでアドレス空間も違う。データを変換して転送する必要がある。
-  - ネットワークの性能は限られている。計算操作と比較して極端に遅い。
-  - 資源によっては、特定のマシンでしか利用できない、などの偏り。
-  - 部分的に機能しなくなる場合がある（ネットワークまたはマシンの故障）。
-  - オープンな分散システムでは、セキュリティとネーミングの問題が発生する。
+## Programming on distributed systems
+-Question: Is distributed programming just one kind of parallel programming, so can conventional techniques of concurrent programming still be used?
+-Answer: It's not so simple for the following reasons.
+  -Since the process is different, the address space is also different. Data needs to be converted and transferred.
+  -Network performance is limited. Extremely slow compared to the calculation operation.
+  -Some resources are biased such that they can only be used on specific machines.
+  -Partially non-functional (network or machine failure).
+  -Open distributed systems have security and naming issues.
 
-## ネットワーク透過性
-- 理想的な場合、すなわち 1) ネットワークが高速で、2) 資源はどこでも使えて、3) 全てのコンピュータが故障無く起動・実行し、3) 全てのユーザーが互いに信頼できる、ような場合を仮定する。通常の並行プログラミングがどのように分散システムに分割されても、元の場合と同じように走ることを、システム側によって保証することができる。
-- こういう単純さを保ちつつ、理想的でない場合にうまく対処したい。これはまだ解決をみない研究問題だが、その一角に触れる。次のようなことを考える必要がある。
-  - Network Awareness :: プログラムの正しさを保ったまま、ネットワーク性能を調節するためには、ネットワークをどう使うかがある程度分かる必要がある（Awareness）。もっと言えば、ネットワーク操作は少数かつ予測可能である必要がある（？）
-  - オープン性 :: 独立の計算を結合するためにどうするか。動的型付けであると比較的簡単にできる。
-  - 局所化された資源を扱う :: 例えば何らかの仕事をして結果を返すサーバーがあったとして、クライアントはサーバーの資源（ファイルなど）を扱いたいかもしれない。そういった指定ができる必要がある。
-  - 失敗の検出 :: アプリケーションプログラムから失敗を検出し、修復出来る必要がある。冗長性を使って失敗を隠蔽する抽象を構築することが考えられる。
-  - この他にセキュリティ、ネーミング、資源管理、フォールトトレランス抽象といった問題があるが、ここでは触れない。
+## Network transparency
+-Assume ideal case: 1) network is fast, 2) resources are available everywhere, 3) all computers are up and running without failure, and 3) all users trust each other To do. No matter how normal concurrent programming is divided into distributed systems, it can be guaranteed by the system that it will run as it did in the original case.
+-Keeping this simplicity, I want to deal well with non-ideal cases. This is a research question that has yet to be resolved, but I will touch on a corner of it. You need to consider the following.
+  -Network Awareness :: In order to adjust the network performance while keeping the program correct, it is necessary to understand to some extent how to use the network (Awareness). More specifically, network operations need to be small and predictable (?).
+  -Openness :: What to do to combine independent computations. Dynamic typing is relatively easy.
+  -Working with localized resources :: For example, if you have a server that does some work and returns results, the client may want to work with the server's resources (such as files). It is necessary to be able to specify such.
+  -Failure detection :: It is necessary to be able to detect and repair failures from application programs. One could think of building an abstraction that uses redundancy to hide failures.
+  -There are other issues such as security, naming, resource management, and fault tolerance abstraction, which we will not cover here.
 
-## ネットワーク透過であるということの具体例 
-例えば、プロセスAで`X=the_value(text: "It is a ...", author: "Tom")`が行われているとする。プロセスBでこの変数への参照Yがあれば、`{Browse Y}`で`the_value(text: "It is a ...", author: "Tom")`が確認できる。手続きや関数も値なので同様。もう一例、プロセスAで`declare X`として束縛されていない変数Xがあり、プロセスBでもこの変数への参照Y（すなわちXとYは意味的には同じものを参照している）を持つとする。プロセスAで`X=100`とすると、プロセスBにおいてYも100に束縛される。状態あり実体である、セル変数（手続き型言語などにおけるいわゆる「変数」）も同様に、その内容値を変更すればそれは全てのプロセスに及ぶ。
+## Specific example of being network transparent
+For example, suppose that process A has `X=the_value(text: "It is a ...", author: "Tom")`. If there is a reference Y to this variable in process B, you can check `the_value(text: "It is a ...", author: "Tom")` with `{Browse Y}`. The same applies because procedures and functions are also values. As another example, if process A has a variable X that is not bound as `declare X`, and process B also has a reference Y to this variable (ie, X and Y refer to the same thing semantically). To do. If process X sets `X=100`, then process B also binds Y to 100. Similarly, a cell variable (so-called “variable” in a procedural language, etc.), which is an entity with a state, also affects all processes if its content value is changed.
 
-プロセス間に最初の参照を渡すための単純な機構として、チケットがある。あるプロセスにおいて`T={Connection.offer X}`とすることで変数Xに対する参照を表すチケットT（具体的には`oz-ticket://192.168.0.3:9000/h7413698#0`といった文字列）が生成される。何らかの方法で別プロセスがこのチケットを受け取り、`Y={Connection.take T}`とすれば、YはXと同じ言語実体を参照していることになる。
+Tickets are a simple mechanism for passing an initial reference between processes. Ticket T that represents a reference to variable X by setting `T={Connection.offer X}` in a certain process (specifically, a character string such as `oz-ticket://192.168.0.3:9000/h7413698#0` ) Is generated. If another process receives this ticket in some way and makes `Y={Connection.take T}`, Y refers to the same language entity as X.
 
-## 言語実体はどう分散されるか
-言語実体はそれぞれホームプロセスを持つ。デフォルトでは、このホームプロセスは、その実体が生成されたプロセスである。数値、レコード、手続き、データフロー変数、セルなどそれぞれの言語実体に対して、どう分散されるかという分散プロトコルが単純な形で明確に定義されている。
+## How linguistic entities are distributed
+Each language entity has a home process. By default, this home process is the process in which the entity was created. For each language entity such as number, record, procedure, data flow variable, cell, etc., the distribution protocol of how to distribute is clearly defined in a simple form.
 
-例えば、大まかには、状態なし実体はその値が不変なので必要とした各プロセスにコピーが送られる（キャッシュされる）。状態あり実体は、いくつかのプロトコル（静止状態（元のプロセスに留まる）、モバイル状態（別プロセスに移動する）、無効化（最適化））がある。オブジェクトのデフォルトの分散プロトコルはモバイル状態である。モバイル状態においては、オブジェクト自体は各プロセスにキャッシュされており、状態を更新する權利（当然、一時に一つしかない）が必要に応じてプロセス間を移動する。
+For example, roughly, a stateless entity has its value immutable, so a copy is sent (cached) to each process that needs it. Stateful entities have several protocols: quiescent state (remains in the original process), mobile state (moves to another process), invalidation (optimization). The default distribution protocol for objects is mobile. In the mobile state, the objects themselves are cached in each process, and the state updater (of course, only one at a time) moves between processes as needed.
 
-GCは、各プロセスの局所的GCと、遠隔参照を重み付きでカウントする分散GCが協調して働く。さらに、永久的とみなせる失敗を発見し、それに関連する実体をGCするタイムリース機構を持つ。
+The GC works in cooperation with the local GC of each process and the distributed GC that counts remote references with weights. In addition, it has a time lease mechanism that discovers failures that can be considered permanent and GCs the related entities.
 
-## 部分的失敗
-最もよくある種類の失敗として、永久的なプロセスの失敗とネットワークの動作不能が挙げられる。Mozartシステムの失敗モデルはこの二種類を扱い、検出する。失敗モデルは、システム内で発生する様々な分散失敗を、それがどのように言語に反映されるかという失敗検出機構によって定義する。
+## Partial failure
+The most common types of failures are permanent process failures and network inoperability. The failure model of the Mozart system handles and detects these two types. The failure model defines various distributed failures that occur in the system by means of a failure detection mechanism of how they are reflected in the language.
 
-プロセス失敗は永久的なものなので、`permFail`で表す。一般には、プロセス失敗はWAN（e.g. インターネット）の上で検出するすることはできず、LAN上でしか検出できない。一方、ネットワーク動作不能は、一時的なものと考える（`tempFail`）。修復されつつあると考える。これは時間切れ（time-out）とは違う。tempFailはアプリケーションにネットワークに問題があることを知らせるのであり、接続の終わりを示すのではない。これによって、アプリケーションは（例えば別のサーバーに繋ぐというような）対処をより早くできる。
+Process failures are permanent and are represented by `permFail`. In general, process failures cannot be detected on the WAN (e.g. Internet), only on the LAN. On the other hand, network inactivity is considered temporary (`tempFail`). I think it is being restored. This is not a time-out. tempFail informs the application that there is a network problem, not the end of the connection. This allows the application to deal with it faster (eg by connecting to another server).
 
-設計について言うと、失敗の局限は、アプリケーション設計の最初から考えておくべきである。その際、失敗検出の同期／非同期と局限機構の間に基本的なトレード・オフがある。例えば、失敗検出が同期的であれば、局限機構は単純で済むが、性能は落ちる。これは楽観的な並行性制御と悲観的な並行性制御の間にあるトレード・オフと同様である。失敗の局限は、全ての失敗を内部的に処理する抽象を構築するのが一つの方法である。うまくいけば、完全に隠蔽できる。次善の方法として、（メッセージ伝達スタイルのように）プロセス間のインターフェースを狭くするものがある。対照して、分散システムの状態共有スタイルにおける処理処理は難しい。
+When it comes to design, failure localization should be considered from the beginning of application design. At that time, there is a basic trade-off between synchronous/asynchronous failure detection and a bound mechanism. For example, if the failure detection is synchronous, the localization mechanism can be simple, but performance will be degraded. This is similar to the trade-off between optimistic and pessimistic concurrency control. Failure localization is one way to build an abstraction that handles all failures internally. Hopefully you can completely hide it. The next best option is to narrow the interface between processes (like the messaging style). In contrast, processing in the state sharing style of distributed systems is difficult.
 
-## セキュリティ
-安全であるということは全体的な性質である。システムのどこかの部分に弱点があればつけ込まれる。さらに言えば、絶対に安全であるということは無く、従ってセキュリティを破ろうとする体に割に合わないと思わせるくらいに、その労力を大きくすることしかできない。セキュリティの問題は分散システムの各層で現れる。アプリケーション、言語、言語実装、OS、ネットワーク、ハードウエア。
+## Security
+Being safe is an overall property. Any weakness in any part of the system will be exploited. Furthermore, it's not absolutely safe, so you can only increase the effort to make it seem unworthy to the body trying to break security. Security issues appear at each layer of a distributed system. Application, language, language implementation, OS, network, hardware.
 
-## 構築
-分散アプリケーションの開発は、二段階で行う。まず最初にプロセスを分けずに、次にプロセスを分けて地理的・性能的な制約を加えて行う。
+## construction
+Developing a distributed application is a two-step process. First, do not divide the process, then divide the process and add geographical and performance constraints.
