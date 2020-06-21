@@ -1,76 +1,79 @@
-# 制約プログラミング
+# Constraint programming
 
-九章の関係プログラミングにおいて、より実用的な探索には制約プログラミングを用いるとした。ここでその方法の基本的な考え方を見る。
+In relational programming in Chapter 9, we decided to use constraint programming for more practical searches. Here we see the basic idea of ​​the method.
 
-制約プログラミング自体は、何らかの論理的な制約(constarint)を満たす解を求める技法の集合である。制約プログラミングでは解を求めるにあたって、力ずくの探索を可能な限り避けて（探索量を減らす）賢く問題を解こうとする。言語に実装されていることもあれば、ライブラリとして提供されることもある。その意味で、宣言的プログラミング、並行プログラミング、オブジェクト思考といったこれまで扱ってきたプログラミングパラダイムとはやや質的に異なる。
+Constraint programming itself is a set of techniques for finding a solution that satisfies some logical constraint. Constraint programming tries to solve problems wisely by avoiding brute force searches (reducing the amount of searches) as much as possible when seeking solutions. It may be implemented in the language or provided as a library. In that sense, it is a little qualitatively different from the programming paradigms that have been dealt with so far, such as declarative programming, concurrent programming, and object thinking.
 
-## 基本的な考え方
+## basic way of thinking
 
-制約プログラミングにおいては探索を次のような戦略で行う。
+In constraint programming, the search is performed by the following strategy.
 
-- 部分的な情報を蓄えていく
-- （それらを最大限活用して）局所的な演繹を行う
-- 局所的演繹に行き詰まったらちょっと探索を行い（これで問題が分割され、部分的な情報が得られた）、それぞれに対して再び局所的演繹を行う
+-Accumulate partial information
+-Perform local deductions (making the most of them)
+-If you get stuck in local deduction, do a little search (this splits the problem and gives you partial information), then do local deduction again for each
 
-これがどういうことか、具体例で見てみよう。探索がほとんど行われないことに注目。
+Let's see what this means with a concrete example. Note that the search is rare.
 
-### 24個の単位正方形から成る長方形で、周長20のものはどのような長方形か？
+### What kind of rectangle is a rectangle composed of 24 unit squares and has a circumference of 20?
 
-これは、`x*y	= 24`と`2*(x+y) = 20`という式になるだろう。例を簡単にするために`x≦y`という式も加えておく。これらが制約である。次にみるように、こういう制約が色々な情報を伝播していくため、「伝播子(propagater)」という。
+This would be the expression `x*y = 24` and `2*(x+y) = 20`. To simplify the example, we also add the expression `x≤y`. These are the constraints. As we will see next, because such constraints propagate various information, they are called "propagators".
 
-次に、必ず必要というわけではないが、変数のありうる値の情報（基本的制約）を与えておく。これは大体において可能で、かつ問題を解くのを簡単にする。この場合、`x∈{0,...,9}`, `y∈{0,...,9}` と簡単に分かる。
+Next, although not always necessary, information about the possible values ​​of variables (basic constraints) is given. This is largely possible and makes it easy to solve the problem. In this case, it can be easily understood as `x ∈ {0,...,9}` and `y ∈ {0,...,9}`.
 
-これら３つの伝播子と２つの基本的制約を次のように表す（Ozでは`X*Y=:24`のようにして伝播子を表し、`X::1#9`のように基本的制約を表せる）。
+These three propagators and two basic constraints are expressed as follows (in Oz, a propagator is expressed as `X*Y=:24`, and it is expressed as `X::1#9`. Can represent constraints).
 
-	S_1 : X*Y=:24 X+Y=:10 X=<:Y  ||  X::1#9  Y::1#9
+S_1 :X*Y=:24 X+Y=:10 X=<:Y || X::1#9 Y::1#9
 
-すぐに分かるが制約プログラミングでは各探索が計算空間にカプセル化されて行われる。上では計算空間S_1の中にXとYに関する伝播子と基本的制約がある。
+As can be seen immediately, in constraint programming, each search is performed by encapsulating it in the computational space. Above there are propagators and basic constraints on X and Y in the computational space S_1.
 
-ここで例えばXとYの全ての組について制約を満たすかどうかを調べれば確実に答えはでる（generate-and-test方式）が、制約プログラミングはそうしない。次のようにして求める。
+For example, if you check whether all the pairs of X and Y satisfy the constraint, the answer is sure (generate-and-test method), but constraint programming does not. Calculate as follows.
 
-伝播子`X*Y=:24`と基本的制約`Y::1#9`からXは少なくとも3より大きく、8より小さい。Yについても同様。よって、
+Propagator `X*Y=:24` and basic constraints `Y::1#9` to X are at least greater than 3 and less than 8. The same applies to Y. Therefore,
 
-	S_1 : X*Y=:24 X+Y=:10 X=<:Y  ||  X::3#8  Y::3#8
+	S_1 :X*Y=:24 X+Y=:10 X=<:Y || X::3#8 Y::3#8
+
+It's a sequel.
+And (local deduction). Then from the propagator `X+Y=:10`,
+
+	S_1 :X*Y=:24 X+Y=:10 X=<:Y || X::3#7 Y::3#7
 	
-となる（局所的演繹）。次に伝播子`X+Y=:10`から、
+It's a sequel.
+Becomes Go back and start from `X*Y=:24`
 
-	S_1 : X*Y=:24 X+Y=:10 X=<:Y  ||  X::3#7  Y::3#7
+	S_1 :X*Y=:24 X+Y=:10 X=<:Y || X::4#6 Y::4#6
 	
-となる。さらに戻って`X*Y=:24`から
+It's a sequel.
+Becomes No more propagators can add any more information. The search is performed here for the first time. Branch to `X=4` and `X::5#6`. A separate calculation space is prepared for each search.
 
-	S_1 : X*Y=:24 X+Y=:10 X=<:Y  ||  X::4#6  Y::4#6
-	
-となる。もうどの伝播子もこれ以上情報を追加できない。ここで初めて探索が行われる。`X=4`と`X::5#6`に分岐する。探索のためにそれぞれ別の計算空間が用意される。
+	S_2 :X*Y=:24 X+Y=:10 X=<:Y || X=4 Y::4#6
+	S_3 :X*Y=:24 X+Y=:10 X=<:Y || X::5#6 Y::4#6
 
-	S_2 : X*Y=:24 X+Y=:10 X=<:Y  ||  X=4  Y::4#6
-	S_3 : X*Y=:24 X+Y=:10 X=<:Y  ||  X::5#6  Y::4#6
+S_2 is Y=6 due to the deduction of the propagator `X*Y=:24`. S_3 deduces `X=6 Y=4` by the propagator `X*Y=:24`, but fails because it is against another propagator `X=<:Y`. Therefore, only `X=4 Y=6` is the solution.
 
-S_2は伝播子`X*Y=:24`の演繹によりY=6と出る。S_3は伝播子`X*Y=:24`により`X=6 Y=4`を演繹するが、別の伝播子`X=<:Y`に反するため、失敗となる。よって、`X=4 Y=6`のみが解となる。
+Looking back, it can be seen that there were only two searches done to find the solution. The execution takes place in a “computation space”, where 1) local deduction by the propagator until it stabilizes, 2) distributive and alternate phases of the search. 2) first makes two copies of the computational space and decomposes the candidate into two parts (X=4 and X::5#6 above). To write in a formal way, divide the problem `P` into `P∧C` and `P∧¬C`.
 
-見返すと、解を求めるにあたって探索を二通りしか行わなかったことが分かる。実行は「計算空間」の中で行われ、1) 安定するまで伝播子による局所的演繹, 2) 分配して探索 の二つのフェーズを交互に行う。2) はまず計算空間の２つのコピーが作られ、候補を二つの部分に分解（上だとX=4とX::5#6）する。定式的に書けば問題`P`を`P∧C`と`P∧¬C`に分けることである。
+There are two parts that are abstracted here. The first is the method of dividing `P` into `P∧C` and `P∧¬C`, which is called "distribution strategy". A tree structure is created when the division method is decided, but it becomes obvious how to search it (“search strategy”). In constraint programming, distribution strategy and search strategy can be specified separately.
 
-ここで抽象化される部分が二つある。一つめが`P`を`P∧C`と`P∧¬C`に分けるその分け方で、「分配戦略」と言う。分け方が決まると木構造ができるが、それをどう探索するのか、ということが出てくる（「探索戦略」）。制約プログラミングでは分配戦略と探索戦略を別々に指定できる。
+## Constraint-based calculation model
 
-## 制約ベース計算モデル
+### Basic constraint is one of partial values
 
-### 基本的制約は部分値の一つ
+Handle basic constraints such as `X::4#6` to be consistent with previous models. To that end, we recall the concept of "partial values." A partial value is a value that is not yet bound (intuitively there is only partial information). For example, a variable that has just been declared is a partial value, and the value of X in `X=person(Y)` is a partial value that is known to have the structure person(?). Based on this, it is possible to regard `X::4#6` as a value (that is, a partial value) that has partial information that "is one of the values ​​4, 5 and 6" and to execute it correctly. It seems that a certain value is determined.
 
-`X::4#6`といった基本的制約をこれまでのモデルと整合するように扱う。そのために、「部分値」という概念を思い出す。部分値とはまだ束縛されていないような（直感的に言えば部分的にしか情報がないような）値のことである。例えば宣言されただけの変数は部分値だし、`X=person(Y)`においてXの値はperson(？)という構造を持つことが分かっている部分値である。これを踏まえると、`X::4#6`は「4,5,6のいずれかの値である」という部分的な情報を持つ値（すなわち部分値）とみなせ、実行を進めることで正確な値が定まる、とみれる。
+### Computational space and propagator
 
-### 計算空間と伝播子
+Searching means trying different possibilities for a variable X, such as whether it is 1 or 2. You can't do that in the declarative model, because X=1 and X=2 are executed in different places, which naturally fails. In other words, it is necessary to work under a mechanism that allows you to try the possibilities in a limited space (and not see it from the outside). That is the calculation space.
 
-探索を行うということは、ある変数Xについてそれが1なのか2なのかといった別々の可能性を試すということである。宣言的モデルでは、別々の箇所でX=1とX=2が実行されるということになり、当然それは失敗となるので、そういうことはできない。つまり、ある局限した空間の中で可能性を試せる（かつそれは外から見えない）ような機構の元で行う必要がある。それが計算空間である。
+As we first saw, the computational space consists of several variables to be solved and their propagators. In the computational space, each propagator concurrently adds information to variables as threads. If it can't be deduced any more (when it reaches a stable state). , Externally returns a message such as "There are N distribution destinations" (in response to such external inquiry).
 
-最初に見たように、計算空間はいくつかの解くべき変数と、その伝播子からなる。計算空間内では、各伝播子がスレッドとして並行的に変数に情報を追加していく。それ以上演繹できなくなれば（安定状態になれば）。、外部に「N個の分配先がありますよ」といったメッセージを返す（そういう外部の問い合わせに対して）。
+### Search strategy
 
-### 探索戦略
+The computational space does not search by itself. Perform local deduction and wait for instructions when stable state is reached. Considering the whole search as a tree, one calculation space performs calculation in one node, and returns the result such as "N child nodes have been generated" (or "results have been satisfied and the result has been obtained"). Only. This way, the search engine is freely programmable. For example, whether to perform depth-first search, breadth-first search, all solutions, or whether to finish with the first one. The search engine must also copy the calculation space when branching the search.
 
-計算空間はそれ自体は探索しない。局所的演繹を行い安定状態に達したら指示を待つ。全体の探索を木として考えると、一つの計算空間は一つのノードにおける計算を行い、「子ノードがN個生成された」（あるいは「制約を満たし結果が出た」）といった結果を外部に返すだけである。こういう風になっているので、探索エンジンは自由にプログラムできる。例えば、深さ優先探索するのか、幅優先探索にするのか、全ての解を出すのか、最初の一個で終えるのか、など。探索エンジンは探索の分岐の際の計算空間のコピーなども行う必要がある。
+### Distribution strategy
 
-### 分配戦略
+Regarding the distribution strategy, for example, `{FD.distribute naive sol(XY)}` can be used to select a naive strategy for X and Y (specific programming is not explained in the book. Not in).
 
-分配戦略については、例えば`{FD.distribute naive sol(X Y)}`とすればXとYについてnaiveという戦略を選ぶ、という風に指定できる（具体的にどうプログラムするかについては本では踏み込んでいない）。
+### Implementation of relational programming
 
-### 関係プログラミングの実装
-
-関係プログラミングにおいてchoise文の実行が計算モデル上どのようになっているかについて触れなかったが、実際はchoise文はこの制約ベース計算モデルを使った言語抽象になっている。
+In relational programming, I didn't talk about how the execution of the choise statement is in the computational model, but in reality the choise statement is a language abstraction using this constraint-based computational model.
