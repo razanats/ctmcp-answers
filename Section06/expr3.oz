@@ -1,4 +1,4 @@
-% 並行性によって状態をエミュレートする
+% Emulate state with concurrency
 
 declare
 fun {MakeState Init}
@@ -17,7 +17,7 @@ in
    S
 end
 
-% ストリームコンテナによるSumList
+% SumList by stream container
 declare
 fun {SumList Xs S}
    Cs = {MakeState S}
@@ -38,5 +38,5 @@ end
 
 {Browse {SumList [1 2 3] 0}}
 
-% SumListのように、呼び出しの間で保持すべき状態がない場合、内部的にアキュムレータを追加してやれば、見た目を変更せずにストリームコンテナを使うことができる。
-% SumCountを追加しようとしても、関数呼び出しの間にアキュムレータがないため、関数定義時点でのストリームコンテナにしかアクセスできない。従って、見た目を変更せずにSumCountを追加することはできない。
+% If there is no state to keep between calls like SumList, you can use the stream container without changing the appearance by adding an accumulator internally.
+% Even if you try to add SumCount, there is no accumulator between function calls, so you can only access the stream container at the time of function definition. Therefore, SumCount cannot be added without changing the appearance.
