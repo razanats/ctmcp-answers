@@ -1,5 +1,5 @@
-# 明示的状態とセキュリティ
+# Explicit state and security
 
-第三章での議論によると、保護境界の構築方法として停留値と可動値がある。前者は、字句的スコープに対応し、後者はWrap,Unwrapに対応する。安全なデータ抽象を構築するに際して、バンドルされているデータ抽象は、停留値として実装できるため、安全性は字句的スコープで実現できる。バンドルされていないデータ抽象は、その値が操作の手元を離れるため、可動値として実装擦る必要がある。
+According to the discussion in Chapter 3, there are stationary and movable values as a method of constructing a protective boundary. The former corresponds to lexical scope, and the latter corresponds to Wrap and Unwrap. When constructing a safe data abstraction, the bundled data abstraction can be implemented as a stall value, so safety can be achieved in the lexical scope. The unbundled data abstraction must be rubbed as a moveable value, as its value leaves the hands of the operator.
 
-第三章で見たとおり、Wrap,Unwrapはその実装のために名前値とチャンクを必要とする。名前値を生成するためには明示的状態が必要なため、バンドルされているデータ抽象を構築するためには、明示的状態が必要であると言える。
+As we saw in Chapter 3, Wrap and Unwrap require name values and chunks for their implementation. It can be said that explicit state is needed to build a bundled data abstraction because it requires explicit state to generate a name value.
