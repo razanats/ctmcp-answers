@@ -1,19 +1,19 @@
-# 関係プログラミング
-第一部：一般的計算モデルの最終章。この章では、これまで扱ってきた宣言的モデルの関数（一章〜四章など）という見方を一般化して関係に基づいた計算モデルを考える。
+#Relationship programming
+Part I: The final chapter of the general computational model. In this chapter, we generalize the view of declarative model functions (Chapter 1 to Chapter 4 etc.) that we have dealt with so far and consider a computational model based on relationships.
 
-## 関係の上でプログラムすること
-プログラマの視点で考えよう。核言語に以下のような文を追加する。
+## Programing in relation
+Think from a programmer's perspective. Add the following sentence to the nuclear language.
 
-	choise <s1> [] ... [] <sn> end % 選択
-	fail % 失敗
+	choise <s1> [] ... [] <sn> end % Choise
+	fail % failure
 
-choise文は、文`<s1>`...`<sn>`の中からどれか一つを選択し、実行する。その実行において`1=2`といった失敗（fail）があれば、改めて別の文`<si>`を選択する。こういう文によって、例えば次のような関数が書ける。
+The choise statement selects and executes one of the statements `<s1>`...`<sn>`. If there is a failure such as `1=2` in the execution, select another statement `<si>` again. With such a statement, for example, the following function can be written.
 
 	fun {PrimaryColors} 
 	  choice red [] blue [] green end 
 	end
 
-これは「呼び出し`{PrimaryColors}`の値は`red`または`blue`または`green`である」と解釈できる。PrimaryColorsは「関数」ではなく「関係」と見る。また、こういう性質を、決まった値を返していた宣言的モデルにおける関数と対比して、「非決定性である」と言う。このような非決定性選択があると、プログラムを論理的な表明のように書くことができる。例えば、
+This can be interpreted as "the value of the call `{PrimaryColors}` is `red` or `blue` or `green`". See PrimaryColors as "relationships" rather than "functions". In addition, such a property is called "non-deterministic" in contrast to the function in the declarative model that returned a fixed value. With such nondeterministic choices, the program can be written like a logical assertion. For example,
 
     fun {TwoPrimaryColors} X Y in
   	  X = {PrimaryColors}
@@ -22,40 +22,40 @@ choise文は、文`<s1>`...`<sn>`の中からどれか一つを選択し、実�
 	  X#Y
 	end
 
-は、「Xは原色で、Yも原色で、XとYは異なる」という意味に取れ、`red#blue`のような解を返す。実装が深さ優先探索だとして、実行は次のようになるだろう。
+Can mean "X is a primary color, Y is also a primary color, and X and Y are different", and returns a solution like `red#blue`. Assuming the implementation is a depth-first search, the execution would be:
 
-1. Xにredが束縛される（選択）
-2. Yにredが束縛される（選択）
-3. X\=Yでfalseとなり、false=trueが実行される（失敗）
-4. 失敗したのでYの選択をやり直しYにblueが束縛される（選択）
-5. X\=Yでtrueとなるので失敗せず、X#Yとしてred#blueが返る
+1. Red is bound to X (selection)
+2. red is bound to Y (selection)
+3. It becomes false at X\=Y and false=true is executed (failure)
+4. Since it failed, Y is selected again and blue is bound to Y (selection)
+5. X\=Y will be true, so it will not fail and red#blue will be returned as X#Y
 
-これから分かるように、関係の上でプログラムを実行することは、実際には探索を行うことである。明らかに計算量は指数的になる。それを一般的に避けることはできない。このため、探索空間が小さいか、問題の構造を調べるための研究用のツールとして使う場合において実用的であり、それ以外の場合に適用するにはもっと手の込んだ技法が必要になる（十二章：制約プログラミング）。とりあえずこの章では実用的な場合に限って考える。
+As can be seen, executing a program on a relation is actually performing a search. Obviously, the calculation amount becomes exponential. It is generally unavoidable. This makes it practical when the search space is small or used as a research tool to investigate the structure of the problem, and requires more elaborate techniques to apply otherwise. Chapter 2: Constraint programming). For the moment, this chapter considers only practical cases.
 
-## 論理型プログラミングとの関係
-宣言的プログラミングおよび関係プログラミングは、論理型プログラミングと密接な関係がある。論理型プログラムとは、「操作的意味が与えられた（つまり実行できる）論理の表明」である。論理型プログラムは操作的意味と論理的意味の両方を持つ。この論理的意味の基礎としては、一階述語論理（命題論理に変数、項、限定子を加えたもの）がある。一階述語論理に公理の集合を与えることで演繹が可能になる。
+## Relationship with logic programming
+Declarative programming and relational programming are closely related to logical programming. A logical program is a "statement of logic given an operational meaning (that is, executable)". Logical programs have both operational and logical meanings. The basis of this logical meaning is first-order predicate logic (propositional logic plus variables, terms, and qualifiers). Deduction becomes possible by giving a set of axioms to the first-order predicate logic.
 
-### 論理型プログラミング
-論理型プログラムは、一階述語論理の公理の集合と、質問（query）、及び演繹を行うためのシステムである「定理証明器」から成る。論理型プログラムを実行するにあたって、次のようなことを考える必要がある。
+### Logical programming
+The logic type program consists of a set of axioms of first-order predicate logic, a query, and a "theorem prover" which is a system for performing deduction. In executing a logic program, it is necessary to consider the following.
 
-- 真であってもその証明がその論理モデルの中では存在しないことがあるという、理論的な限界（不完全性定理）
-- プログラマがアルゴリズムを定義できかつ計算量を予測できるという実用上の要求への対応
-- 構成的（真の場合その具体例を出せる）である必要性
+-Theoretical limit that the proof may not exist in the logical model even if it is true (incompleteness theorem)
+-Meet the practical demands that programmers can define algorithms and predict computational complexity
+-Need to be constructive (when true, can give concrete examples)
 
-これらのことに対して、次のような二つの考え方がある。
+There are two ways of thinking about these things.
 
-- 形式を制限することで効率のよい定理証明器を作れるようにする
-  - Prolog は公理をホーン節（`∀x1,...,xn. <a1>∧...∧<an> → <a>`という形）に限定して、推論規則として導出（resolution）を使う
-- プログラマが実践的な知識を使って定理証明器を助けられるようにする
-  - 例えばソートを行う論理型プログラムを書くことはできるが効率が悪い。そういう部分にマージソートを使えるようにする。論理的意味は変わらない。
+-Enable efficient theorem prover by limiting the form
+  -Prolog limits axioms to Horn clauses (`∀x1,...,xn. <a1>∧...∧<an> → <a>`), and derives resolution as an inference rule. use
+-Allow programmers to use practical knowledge to help theorem provers
+  -For example, it is possible to write a logical program that sorts, but it is inefficient. Enable merge sort for such parts. The logical meaning does not change.
 
-### 論理的意味と操作的意味
-関係プログラムの任意の文`<s>`を論理式`T(<s>)`に容易に翻訳することができる。例えば、`if X then <s1> else <s2> end`は`x=true ∧ T(<s1>) ∨ x=false ∧ T<s2>`である。
+### Logical and operational meaning
+Any statement `<s>` in the related program can be easily translated into a logical expression `T(<s>)`. For example, `if X then <s1> else <s2> end` is `x=true ∧ T(<s1>) ∨ x=false ∧ T<s2>`.
 
-リストの連結（Append）を書いてみて、操作的意味と論理的意味の両方の立場で、プログラムの実行について考える。
+Write a list concatenation (Append) and think about program execution in terms of both operational and logical meanings.
 
-#### 決定性連結
-以下は宣言的モデルで書いたAppend関数である。
+#### Deterministic consolidation
+Below is the Append function written in the declarative model.
 
 	fun {Append A B}
 	  case A
@@ -63,7 +63,7 @@ choise文は、文`<s1>`...`<sn>`の中からどれか一つを選択し、実�
 	  [] X|As then X|{Append As B}
 	end
 
-手続きの形で書くと以下のようになる。
+The procedure is written as follows.
 
 	proc {Append A B C}
 	  case A
@@ -71,12 +71,12 @@ choise文は、文`<s1>`...`<sn>`の中からどれか一つを選択し、実�
 	  [] X|As then C=X|{Append As B}
 	end
 
-この論理的意味は、翻訳により`∀a,b,c. append(a,b,c) ⇔ (a=nil ∧ c=b) ∨ (∃x,a',b'. a=x|a' ∧ c=x|c' ∧ append(a',b,c'))`となる。これの実行は、論理的には`append([1,2,3],[4,5],x)`が演繹により`append([1,2,3],[4,5],[1,2,3,4,5])`となることである。
+This logical meaning is translated as `∀a,b,c. append(a,b,c) ⇔ (a=nil ∧ c=b) ∨ (∃x,a',b'. a=x|a '∧ c=x|c' ∧ append(a',b,c'))`. This is done logically by deducing `append([1,2,3],[4,5],x)` to `append([1,2,3],[4,5],[ 1,2,3,4,5])`.
 
-もう少し考えてみる。論理的意味に立てば、`append(a,b,c)`は(a,b,c)が連結関係である、ということを言っているので、`append(x,[4,5],[1,2,3,4,5])`が演繹により`append([1,2],[4,5],[1,2,3,4,5])`となることが期待されるが、上の関数はそうならない。引数Aが束縛されていることが前提となっていて（`case A`の部分で）ブロックするからである。宣言的モデルのAppendは（入力から出力への）方向性を持つため、それに対応していない演繹はできない。それでも、無限再帰やブロック、例外が起こらず実行がきちんと終了した時には論理的意味を守る。
+Let's think a little more. In a logical sense, `append(a,b,c)` says that (a,b,c) is a concatenation, so `append(x,[4,5], It is expected that [1,2,3,4,5])` will be deduced into `append([1,2],[4,5],[1,2,3,4,5])`. However, the above function does not. This is because the argument A is supposed to be bound and blocks (in `case A` part). The declarative model Append is directional (from input to output) and cannot be deduced without it. Even so, it keeps its logical meaning when the execution ends properly without infinite recursion, block, or exception.
 
-#### 非決定性連結
-上のAppend関数の論理的意味を満たすよう、今度はchoise文を使ってAppend関数を書くと以下のようになる。
+#### Non-deterministic consolidation
+To satisfy the logical meaning of the Append function above, this time we write the Append function using the choise statement and it becomes as follows.
 
 	proc {Append ?A ?B ?C}
 	  choise 
@@ -86,15 +86,15 @@ choise文は、文`<s1>`...`<sn>`の中からどれか一つを選択し、実�
 	  end
 	end
 
-これは、例えば二つの引数が決まっていないような呼び出し`{Append X Y [1 2 3]}`でも`X#Y`が`nil#[1 2 3]`や`[1]#[2 3]`といった解を返す。まったく引数が決まっていないような呼び出しに対してすら解を返す（ただしそういう解は無限にあるので全て列挙することはできない）。
+This is because, for example, in a call `{Append XY [1 2 3]}` in which two arguments are not determined, `X#Y` is `nil#[1 2 3]` or `[1]#[2 3 ]` is returned. It even returns a solution to a call that has no fixed arguments (although such solutions are infinite, so you can't list them all).
 
-#### 決定性連結と非決定性連結、あるいは関数的手続きと関係的手続き
-以上の例から分かることを次にまとめる。非決定性連結と違って決定性連結は方向性を持つため、入力として想定されたものを出力にしようとしたりしても、演繹されない。非決定性はそうではない。つまり、非決定性の手続きは部分的な情報に基づいて計算を行うことができる。そして、決定性連結（関数的手続き）と違い、非決定性連結（関係的手続き）は、ある引数を入力にするか出力にするかを呼び出しの度に決められる。ただし、こういった柔軟性の裏には指数的な探索や無限ループに陥る可能性がある。
+#### Deterministic and non-deterministic concatenation, or functional and relational procedures
+The following is a summary of what can be understood from the above examples. Unlike non-deterministic concatenation, deterministic concatenation has directionality, so even if you try to output what was supposed as input, it is not deduced. Non-determinism is not. That is, non-deterministic procedures can make calculations based on partial information. And, unlike deterministic connection (functional procedure), non-deterministic connection (relational procedure) determines whether a certain argument is input or output at each call. However, behind this flexibility is the possibility of falling into an exponential search or an infinite loop.
 
-非決定性の手続きはどうしても必要なときに限って使用するのが良い（これは決定性の操作と非決定性の操作を構文で区別するOzの立場で、純粋Prologはこれを区別しない）。
+Non-deterministic procedures should be used only when absolutely necessary (this is Oz's position to syntactically distinguish between deterministic and non-deterministic operations, pure Prolog does not distinguish between them).
 
-#### 他のモデルにおける論理型プログラミング
-一章〜三章の直列宣言的モデル、それをそのまま並行的にした四章のモデルは既に述べたように論理型プログラミングが行える。第五章のポートを使用したメッセージ伝達並行モデルは非決定性を持つが、宣言的モデルに`WaitTwo`操作を加えて拡張することで表現できる（例えばAまたはBというメッセージが非決定的に来るというのは`Z = {WaitTwo A B}`でありその論理的意味は`z=a ∨ z=b`である）。六章〜八章の状態ありモデルは別で、これに論理的意味を簡単に与える方法はない。論理型プログラミングを行うためのモデルとしては、第十二章の制約ベース計算モデルがこの本の中で最も強力なものである。
+#### Logical programming in other models
+The serial declarative model of Chapters 1 to 3 and the model of Chapter 4 in which the parallel declarative model is used as it is can perform logical programming as already described. Although the message transfer concurrency model using ports in Chapter 5 is non-deterministic, it can be expressed by extending the declarative model by adding the `WaitTwo` operation (for example, the message A or B comes non-deterministically). Is `Z = {WaitTwo AB}` and its logical meaning is `z=a ∨ z=b`). Apart from the stateful model in Chapters 6-8, there is no easy way to give it a logical meaning. The constraint-based computational model in Chapter 12 is the most powerful model in this book as a model for logical programming.
 
-## 関係プログラミングの有用な例
-自然言語のようなあいまいな文法を解析するのに関係プログラミング（あるいは制約プログラミング）は好適である。lec/yaccなどのツールでは解析の難しい文法も解析することができる。この章では簡単な英文やS式の受理と木構造への変換、それを抽象化した文法インタプリタの例を見る。
+## Useful examples of relational programming
+Relational programming (or constraint programming) is suitable for parsing ambiguous grammars such as natural language. Tools such as lec/yacc can also analyze grammars that are difficult to parse. In this chapter, we will see an example of a simple grammar and S-expression acceptance and conversion into a tree structure, and a grammar interpreter that abstracts it.
