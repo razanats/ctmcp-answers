@@ -1,21 +1,21 @@
-# 第八章：状態共有並行性
+# Chapter 8: State Sharing Concurrency
 
-## 状態共有モデル
-状態共有並行モデルは、宣言的並行モデルに値可変変数であるセルを追加した計算モデルものである。一方、前章：メッセージ伝達並行性では、宣言的並行モデルに同じく値可変変数の一種であるポートを追加した。値可変変数を使っているのでこれらをまとめて状態あり並行モデルと言うことができるが、実際には双方のプログラミングスタイルは全く異なる。状態共有並行モデルが扱うのは共有データに複数のスレッドが並行的にアクセスするようなプログラムであり、メッセージ伝達並行モデルが扱うのはマルチエージェントなプログラムである。
+## State sharing model
+The state-shared concurrent model is a computational model in which cells that are variable variables are added to the declarative concurrent model. On the other hand, in the previous chapter, Message Concurrency, we added a port, which is also a kind of variable variable, to the declarative concurrency model. Since variable variables are used, these can be collectively called a stateful concurrency model, but in reality the programming styles of both are completely different. The state sharing concurrency model handles programs in which multiple threads access shared data in parallel, and the message transfer concurrency model handles multi-agent programs.
 
-状態ありの並行性をそのまま扱うと、スレッドのインターリーブによってありうる莫大なプログラムの実行経路を扱う必要が出てくる。これを避ける一つの方法として、前章のメッセージ伝達並行性があった。この章では、共有データについて、様々な抽象を用いて大きめの原子的アクションを構築することでこれを軽減する。
+If the stateful concurrency is handled as it is, it becomes necessary to handle the enormous program execution path that can be caused by thread interleaving. As one way to avoid this, there was message transmission parallelism in the previous chapter. In this chapter, we mitigate shared data by building large atomic actions using various abstractions.
 
-## 原子的アクション
-原子的アクションの抽象を構築するために、言語の意味によって原子性が保証された操作を利用する。Ozであれば、セル変数Cの変更前の値をOldに束縛し、新たな値NewをCに代入する文`{Exchange C Old New}`は原子的に実行される。こに加えて、データフロー変数の「未束縛の値を使おうとしたとき、束縛されるまで待機する」という性質を使う。例えば、これを使ってデータ抽象として並行的に呼べるキューを構築する、さらにこの並行キューを使ってモニタを実装する、など。
+## Atomic action
+To construct an abstraction of atomic actions, we use operations whose atomicity is guaranteed by the semantics of the language. If it is Oz, the statement `{Exchange C Old New}` that binds the old value of the cell variable C to Old and assigns the new value New to C is atomically executed. In addition to this, we use the property of the dataflow variable that "when trying to use an unbound value, wait until bound". For example, you can use it to build a queue that can be called in parallel as a data abstraction, and then use this parallel queue to implement a monitor.
 
-### ロック
-こういう抽象として、ロック（Lock）がある。ロックは、共有データへのアクセスが行われる危険領域（Critical Region/Section）に対して、一時に入れるスレッドを一つに制御する。あるスレッドが危険領域を実行中の時、他のスレッドはその入口で待たされる。ロックは`L={NewLock}`で生成し、`lock L then <stmt> end`で危険領域を囲う。特定のロックがいくつものプログラム領域に散らばっていてもかまわない。この場合、ある危険領域の中から、手続き呼び出しなどで、別の（同じロックLによって囲まれた）危険領域に入れるとよい。こういうロックを特に再入可能ロックという。
+### Lock
+Lock is an abstraction of this kind. The lock controls one thread to be put in at once for the critical region (Critical Region/Section) where the shared data is accessed. When one thread is executing the dangerous area, another thread is made to wait at its entrance. A lock is created with `L={NewLock}`, and a dangerous area is enclosed with `lock L then <stmt> end`. It doesn't matter how many particular locks are scattered across the program area. In this case, it is advisable to enter a different dangerous area (enclosed by the same lock L) from a certain dangerous area by calling a procedure. Such a lock is called a reentrant lock.
 
-### モニタ
-ロックは重要な抽象だが、これだけでは十分ではない。例えば、ある固定長のバッファがあるとする。そこに値を入れようとするスレッドと、取り出そうとするスレッドがあるとする。それらのバッファ操作は原子的に行う必要がある。あるスレッドが値を取り出すとして、バッファに値がなければ危険領域の途中で（別のスレッドがバッファに値を入れてくれるまで）待機したいということがあるだろう。こういう時は（値を入れてくれる別のスレッドのために）ロックを一時的に解放する必要がある。そういう機構としてモニタがある。モニタはロック同様に出口と入り口を決めるが、その途中で`wait`して一時的にロックを解放したり、或いは`notify`して`wait`していたスレッドを再び起動するといった、資源を共有するスレッド同士の相互に協調的な動作を可能にする。
+### monitor
+Locking is an important abstraction, but it's not enough. For example, assume there is a fixed length buffer. Suppose there is a thread trying to put a value in it and a thread trying to get it out. These buffer operations must be done atomically. Perhaps one thread retrieves a value and wants to wait in the middle of a critical area (until another thread populates the buffer) if the buffer has no value. When this happens, you need to temporarily release the lock (for another thread that fills in the value). There is a monitor as such a mechanism. Like the lock, the monitor decides the exit and entrance, but in the middle of the process, `wait` to release the lock temporarily, or `notify` and restart the thread that has been `wait` again. It enables cooperative operation of shared threads.
 
-### トランザクション
-モニタとは別の抽象で、データベースのために導入された概念として、トランザクションがある。トランザクションはACIDすなわち原子性（Atomic）、一貫性（Consistency）、孤立性（Isolation）、耐久性（Durability）を満たす操作である。孤立性は直列化可能性（Serializability）とも言う。耐久性は永続性（Persistence）とも言う。ACIとDはやや観点が異なる。データベースを別として、汎用的に並行プログラミングに必要なのはACIで、これを軽量級トランザクション（以下単にトランザクション）という。こういうものが欲しくなる動機として、例外時の後始末をトランザクションシステムに行わせることや、フォールトトレラントなアプリケーションを書くこと、（システムの保証によって）並行プログラムのデッドロックを避けることなどが挙げられる。
+### Transaction
+Another concept that was introduced for databases in another abstraction is the transaction. A transaction is an operation that satisfies ACID, that is, atomicity (Atomic), consistency (Consistency), isolation (Isolation), and durability (Durability). Solitary is also called serializability. Durability is also called Persistence. ACI and D have slightly different perspectives. Aside from the database, what is needed for general-purpose concurrent programming is ACI, which is called a lightweight transaction (hereinafter simply transaction). The motivations for this kind of thing are to let the transaction system clean up on exceptions, write fault-tolerant applications, and avoid deadlocks in concurrent programs (due to system guarantees).
 
-トランザクションの実装...[TODO].
-キーワード：ロックベース並行性制御 / タイムスタンプベース並行性制御 / 楽観的スケジューリング / 悲観的スケジューリング / 二相ロック
+Implementation of transactions... [TODO].
+Keywords: lock-based concurrency control / timestamp-based concurrency control / optimistic scheduling / pessimistic scheduling / two-phase locking
