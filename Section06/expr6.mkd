@@ -1,3 +1,3 @@
-# 宣言的オブジェクトとアイデンティティ
+#Declarative objects and identities
 
-明らかに、宣言的オブジェクトの値として名前値を加えてやればよい。
+Obviously, you can just add the name value as the value of the declarative object.
